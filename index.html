@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>교육활동 보호 연수(만든이: 최창훈)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+        
+        :root {
+            --bg-color: #fdf6e3;
+            --primary: #8ac6d1;
+            --primary-hover: #7bb5c0;
+            --secondary: #ffb6b9;
+            --success: #c8e6c9;
+            --text-main: #333;
+            --card-bg: #fff;
+            --drop-bg: #f0f4f8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg-color); color: var(--text-main); }
+        
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; text-align: center; }
+        
+        /* Screens */
+        .screen { display: none; animation: fadeIn 0.5s ease; }
+        .screen.active { display: block; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Header (Status) */
+        .status-bar { display: flex; justify-content: space-between; background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; font-weight: bold; }
+        .status-item { font-size: 1.1rem; }
+        
+        /* Start Screen */
+        .start-box { background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); margin-top: 10vh; }
+        .start-box h1 { color: var(--primary); margin-bottom: 20px; }
+        input[type="text"] { padding: 12px 20px; font-size: 1.1rem; border: 2px solid #e0e0e0; border-radius: 8px; outline: none; margin-bottom: 20px; width: 80%; max-width: 300px; transition: border-color 0.3s; }
+        input[type="text"]:focus { border-color: var(--primary); }
+        
+        button { background-color: var(--primary); color: white; border: none; padding: 12px 24px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        button:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
+
+        /* Matching Screen */
+        .game-layout { display: flex; gap: 20px; text-align: left; align-items: stretch; }
+        .drop-zones { flex: 2; display: flex; flex-direction: column; gap: 15px; }
+        .drag-items { flex: 1; display: flex; flex-direction: column; gap: 10px; background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        
+        .drop-zone { background: var(--drop-bg); border: 2px dashed #b0bec5; border-radius: 12px; padding: 15px; display: flex; align-items: center; justify-content: space-between; min-height: 80px; gap: 15px; transition: 0.3s; }
+        .drop-zone.hover { background-color: #e3f2fd; border-color: var(--primary); }
+        .drop-zone.correct { background-color: var(--success); border-color: #81c784; border-style: solid; }
+        .def-text { flex: 1; font-size: 0.95rem; line-height: 1.4; }
+        .slot { width: 120px; height: 40px; background: #fff; border-radius: 8px; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; }
+        .drop-zone.correct .slot { background: transparent; border: none; font-size: 1.1rem; color: #2e7d32; }
+
+        .drag-item { background: var(--secondary); color: #fff; padding: 12px; border-radius: 8px; text-align: center; cursor: grab; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.2s; user-select: none; }
+        .drag-item:active { cursor: grabbing; transform: scale(0.95); }
+        .drag-item.dragging { opacity: 0.5; }
+        .drag-item.selected { box-shadow: 0 0 0 4px rgba(255,182,185,0.5); transform: scale(1.05); }
+        
+        .mobile-hint { display: none; font-size: 0.9rem; color: #666; margin-bottom: 10px; font-weight: bold; }
+
+        /* MCQ Screen */
+        .mcq-box { background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .mcq-question { font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; background: var(--drop-bg); padding: 20px; border-radius: 12px; }
+        .mcq-options { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .option-btn { background: #fff; color: var(--text-main); border: 2px solid var(--primary); padding: 15px; font-size: 1rem; border-radius: 8px; font-weight: normal; transition: 0.2s; cursor: pointer; }
+        .option-btn:hover { background: var(--primary); color: #fff; }
+        
+        .option-btn.wrong { background-color: #ffebee; border-color: #ffcdd2; color: #c62828; cursor: not-allowed; }
+        .option-btn.wrong:hover { background-color: #ffebee; color: #c62828; }
+
+        /* Result Screen */
+        .result-box { background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); margin-top: 5vh; }
+        .result-box h1 { margin-bottom: 20px; color: var(--primary); }
+        .stat-list { list-style: none; padding: 0; margin-bottom: 20px; font-size: 1.2rem; line-height: 2; }
+        .stat-list span { font-weight: bold; color: var(--secondary); }
+        #res-feedback { font-size: 1.3rem; font-weight: bold; color: #ff7675; margin-bottom: 30px; background: #ffeaa7; display: inline-block; padding: 10px 20px; border-radius: 8px; }
+
+        /* -10점 애니메이션 스타일 */
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-50px) scale(1.2); }
+        }
+        .minus-score-anim {
+            position: fixed;
+            color: #ff4c4c;
+            font-weight: bold;
+            font-size: 1.8rem;
+            animation: floatUp 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 9999;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .game-layout { flex-direction: column; }
+            .drag-items { flex-direction: row; flex-wrap: wrap; justify-content: center; position: sticky; bottom: 0; z-index: 10; border-radius: 12px 12px 0 0; }
+            .drag-item { padding: 10px 15px; font-size: 0.9rem; }
+            .mobile-hint { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div id="start-screen" class="screen active">
+        <div class="start-box">
+            <h1>⚖️ 교육활동보호 연수(법률 용어편)</h1>
+            <p style="margin-bottom: 20px; color: #666;">제한시간 3분! 용어와 뜻을 연결하고 퀴즈를 풀어보세요.</p>
+            <input type="text" id="nickname-input" placeholder="닉네임을 입력하세요" autocomplete="off">
+            <br>
+            <button onclick="startGame()">게임 시작하기</button>
+        </div>
+    </div>
+
+    <div id="main-ui" style="display: none;">
+        <div class="status-bar">
+            <div class="status-item">👤 <span id="display-name"></span></div>
+            <div class="status-item">⏱️ <span id="display-time">03:00</span></div>
+            <div class="status-item">⭐ <span id="display-score">0</span>점</div>
+        </div>
+
+        <div id="matching-screen" class="screen">
+            <p class="mobile-hint">💡 팁: 단어를 터치(클릭)하고, 알맞은 빈칸을 터치해도 연결됩니다!</p>
+            <div class="game-layout">
+                <div class="drop-zones" id="drop-zones"></div>
+                <div class="drag-items" id="drag-items"></div>
+            </div>
+        </div>
+
+        <div id="mcq-screen" class="screen">
+            <div class="mcq-box">
+                <h2>📝 마무리 퀴즈 (<span id="mcq-progress">1</span>/5)</h2>
+                <div class="mcq-question" id="mcq-q-text">질문 내용</div>
+                <div class="mcq-options" id="mcq-options-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="result-screen" class="screen">
+        <div class="result-box">
+            <h1>🎉 게임 종료!</h1>
+            <ul class="stat-list">
+                <li>플레이어: <span id="res-name"></span></li>
+                <li>최종 점수: <span id="res-score"></span>점</li>
+                <li>정답 횟수: <span id="res-correct"></span> / 20</li>
+                <li>소요 시간: <span id="res-time"></span></li>
+                <li>오답 횟수: <span id="res-wrong"></span>회</li>
+            </ul>
+            <div id="res-feedback">결과 메시지</div>
+            <br>
+            <button onclick="copyResults()" style="background-color: var(--secondary);">📋 결과 복사하기</button>
+            <button onclick="location.reload()" style="margin-left: 10px;">다시 하기</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const originalData = [
+        { term: "공무방해", def: "국·공립학교 교원의 공무를 폭행 또는 협박, 위계로 방해하는 경우" },
+        { term: "무고", def: "타인으로 하여금 처벌 등을 받게 할 목적으로 허위 사실을 신고하는 행위" },
+        { term: "상해", def: "타인의 신체적 건강을 훼손하거나 생리적 기능에 장애를 일으키는 행위" },
+        { term: "폭행", def: "타인의 신체에 대해 위법한 물리력을 행사하는 행위 (접촉 불문)" },
+        { term: "협박", def: "사람에게 공포심을 일으킬 수 있는 정도의 해악을 고지하는 행위" },
+        { term: "명예훼손", def: "공연히 사실 또는 허위 사실을 적시하여 타인의 명예를 훼손하는 행위" },
+        { term: "모욕", def: "공연히 특정한 사람을 향해 경멸적 감정을 표현하는 행위" },
+        { term: "손괴", def: "타인의 재물, 문서 등을 훼손하거나 숨겨 그 효용을 해치는 행위" },
+        { term: "불법정보 유통 행위", def: "정보통신망을 통해 비방 목적 허위사실, 음란물, 공포심 유발 메시지 등을 보내는 행위" },
+        { term: "성범죄", def: "강제 추행, 불법 촬영, 통신매체를 이용한 음란행위 등" },
+        { term: "강요", def: "폭행이나 협박으로 상대방이 하지 않아도 될 일을 억지로 하게 하는 행위" },
+        { term: "스토킹 범죄", def: "상대방 의사에 반해 정당한 이유 없이 지속적으로 따라다니며 불안감을 주는 행위" },
+        { term: "불법 녹음", def: "공개되지 않은 타인 간의 대화를 동의 없이 몰래 녹음하는 행위" },
+        { term: "퇴거불응죄", def: "정당한 권한을 가진 사람으로부터 나가달라는 요구를 받고도 응하지 않는 행위" },
+        { term: "업무방해", def: "허위 사실을 유포하거나 위계 또는 위력으로써 사람의 업무를 방해하는 행위" }
+    ];
+
+    let gameState = {
+        nickname: "",
+        score: 0,
+        wrongAttempts: 0,
+        correctCount: 0, 
+        timeRemaining: 180, // 3분 (180초)
+        timerInterval: null,
+        chunks: [],
+        currentChunkIndex: 0,
+        matchesInCurrentRound: 0,
+        mcqQuestions: [],
+        currentMcqIndex: 0,
+        currentMcqFailed: false, 
+        selectedTermElement: null
+    };
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function switchScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+    }
+
+    function showMinusAnimation(e) {
+        if (!e) return;
+        const anim = document.createElement('div');
+        anim.className = 'minus-score-anim';
+        anim.innerText = '-10'; // 수정된 감점 수치
+        
+        let clientX = e.clientX;
+        let clientY = e.clientY;
+
+        if (e.touches && e.touches.length > 0) {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        } else if (e.changedTouches && e.changedTouches.length > 0) {
+            clientX = e.changedTouches[0].clientX;
+            clientY = e.changedTouches[0].clientY;
+        }
+
+        anim.style.left = (clientX || window.innerWidth / 2) + 'px';
+        anim.style.top = (clientY || window.innerHeight / 2) + 'px';
+        
+        document.body.appendChild(anim);
+        setTimeout(() => anim.remove(), 1000);
+    }
+
+    function startGame() {
+        const nameInput = document.getElementById('nickname-input').value.trim();
+        if (!nameInput) {
+            alert('게임을 시작하려면 닉네임을 입력해주세요!');
+            return;
+        }
+        
+        gameState.nickname = nameInput;
+        document.getElementById('display-name').innerText = nameInput;
+        document.getElementById('start-screen').classList.remove('active');
+        document.getElementById('main-ui').style.display = 'block';
+        switchScreen('matching-screen');
+
+        let shuffledData = shuffleArray([...originalData]);
+        gameState.chunks = [
+            shuffledData.slice(0, 5),
+            shuffledData.slice(5, 10),
+            shuffledData.slice(10, 15) 
+        ];
+        
+        let mcqPool = shuffleArray([...originalData]);
+        gameState.mcqQuestions = mcqPool.slice(0, 5);
+
+        startTimer();
+        loadMatchingRound();
+    }
+
+    function startTimer() {
+        updateTimerDisplay();
+        gameState.timerInterval = setInterval(() => {
+            gameState.timeRemaining--;
+            updateTimerDisplay();
+            if (gameState.timeRemaining <= 0) {
+                clearInterval(gameState.timerInterval);
+                alert("시간이 초과되었습니다! 결과 화면으로 이동합니다.");
+                endGame();
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const m = Math.floor(gameState.timeRemaining / 60).toString().padStart(2, '0');
+        const s = (gameState.timeRemaining % 60).toString().padStart(2, '0');
+        document.getElementById('display-time').innerText = `${m}:${s}`;
+        
+        if(gameState.timeRemaining <= 30) {
+            document.getElementById('display-time').style.color = 'red';
+        }
+    }
+
+    function updateScore(points) {
+        gameState.score += points;
+        document.getElementById('display-score').innerText = gameState.score;
+    }
+
+    function loadMatchingRound() {
+        const dropZones = document.getElementById('drop-zones');
+        const dragItems = document.getElementById('drag-items');
+        dropZones.innerHTML = '';
+        dragItems.innerHTML = '';
+        gameState.matchesInCurrentRound = 0;
+        gameState.selectedTermElement = null;
+
+        const currentData = gameState.chunks[gameState.currentChunkIndex];
+        
+        let terms = shuffleArray([...currentData]);
+        let defs = shuffleArray([...currentData]);
+
+        defs.forEach(item => {
+            const dropDiv = document.createElement('div');
+            dropDiv.className = 'drop-zone';
+            dropDiv.setAttribute('data-term', item.term);
+            dropDiv.setAttribute('data-failed', 'false'); 
+            
+            dropDiv.innerHTML = `
+                <div class="def-text">${item.def}</div>
+                <div class="slot">빈칸</div>
+            `;
+
+            dropDiv.addEventListener('dragover', e => {
+                e.preventDefault();
+                dropDiv.classList.add('hover');
+            });
+            dropDiv.addEventListener('dragleave', () => dropDiv.classList.remove('hover'));
+            dropDiv.addEventListener('drop', e => {
+                e.preventDefault();
+                dropDiv.classList.remove('hover');
+                const draggedTerm = e.dataTransfer.getData('text/plain');
+                handleMatchAttempt(draggedTerm, dropDiv, null, e);
+            });
+
+            dropDiv.addEventListener('click', e => {
+                if(gameState.selectedTermElement) {
+                    handleMatchAttempt(gameState.selectedTermElement.innerText, dropDiv, gameState.selectedTermElement, e);
+                }
+            });
+
+            dropZones.appendChild(dropDiv);
+        });
+
+        terms.forEach(item => {
+            const dragDiv = document.createElement('div');
+            dragDiv.className = 'drag-item';
+            dragDiv.innerText = item.term;
+            dragDiv.draggable = true;
+
+            dragDiv.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('text/plain', item.term);
+                setTimeout(() => dragDiv.classList.add('dragging'), 0);
+            });
+            dragDiv.addEventListener('dragend', () => dragDiv.classList.remove('dragging'));
+
+            dragDiv.addEventListener('click', () => {
+                document.querySelectorAll('.drag-item').forEach(el => el.classList.remove('selected'));
+                dragDiv.classList.add('selected');
+                gameState.selectedTermElement = dragDiv;
+            });
+
+            dragItems.appendChild(dragDiv);
+        });
+    }
+
+    function handleMatchAttempt(draggedTerm, dropDiv, draggedElement = null, event = null) {
+        if(dropDiv.classList.contains('correct')) return;
+
+        const correctTerm = dropDiv.getAttribute('data-term');
+        
+        if (draggedTerm === correctTerm) {
+            dropDiv.classList.add('correct');
+            dropDiv.querySelector('.slot').innerText = draggedTerm;
+            updateScore(20); // 수정된 점수 (+20)
+            gameState.matchesInCurrentRound++;
+
+            if (dropDiv.getAttribute('data-failed') !== "true") {
+                gameState.correctCount++;
+            }
+
+            if(!draggedElement) {
+                const items = document.querySelectorAll('.drag-item');
+                for(let item of items) {
+                    if(item.innerText === draggedTerm) { draggedElement = item; break; }
+                }
+            }
+            if(draggedElement) draggedElement.remove();
+            gameState.selectedTermElement = null;
+
+            checkRoundComplete();
+        } else {
+            updateScore(-10); // 수정된 점수 (-10)
+            gameState.wrongAttempts++;
+            dropDiv.setAttribute('data-failed', 'true'); 
+            if (event) showMinusAnimation(event);
+            
+            dropDiv.classList.add('hover');
+            dropDiv.style.borderColor = 'red';
+            setTimeout(() => {
+                dropDiv.classList.remove('hover');
+                dropDiv.style.borderColor = '';
+            }, 500);
+            if(gameState.selectedTermElement) {
+                gameState.selectedTermElement.classList.remove('selected');
+                gameState.selectedTermElement = null;
+            }
+        }
+    }
+
+    function checkRoundComplete() {
+        const targetMatches = gameState.chunks[gameState.currentChunkIndex].length;
+        if (gameState.matchesInCurrentRound >= targetMatches) {
+            gameState.currentChunkIndex++;
+            if (gameState.currentChunkIndex < gameState.chunks.length) {
+                setTimeout(() => loadMatchingRound(), 800);
+            } else {
+                setTimeout(() => {
+                    alert("축하합니다! 짝짓기를 모두 맞혔습니다!\n이제 마무리 퀴즈를 시작합니다.");
+                    startMCQ();
+                }, 500);
+            }
+        }
+    }
+
+    function startMCQ() {
+        if (gameState.timeRemaining > 0) {
+            updateScore(30); // 3분 내 해결 시 보너스 점수 (+30)
+        }
+        switchScreen('mcq-screen');
+        loadMCQ();
+    }
+
+    function loadMCQ() {
+        if (gameState.currentMcqIndex >= gameState.mcqQuestions.length) {
+            endGame();
+            return;
+        }
+
+        gameState.currentMcqFailed = false; 
+        const qData = gameState.mcqQuestions[gameState.currentMcqIndex];
+        document.getElementById('mcq-progress').innerText = gameState.currentMcqIndex + 1;
+        document.getElementById('mcq-q-text').innerText = `다음 설명에 해당하는 법률 용어는?\n"${qData.def}"`;
+
+        const optionsContainer = document.getElementById('mcq-options-container');
+        optionsContainer.innerHTML = '';
+
+        let options = [qData.term];
+        let distractors = shuffleArray(originalData.map(d => d.term).filter(t => t !== qData.term));
+        
+        options = options.concat(distractors.slice(0, 4));
+        options = shuffleArray(options);
+
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = (e) => handleMcqAnswer(opt === qData.term, btn, e);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function handleMcqAnswer(isCorrect, btnElement, event) {
+        if (btnElement.classList.contains('wrong')) return;
+
+        if (isCorrect) {
+            updateScore(20); // 수정된 점수 (+20)
+            if (!gameState.currentMcqFailed) {
+                gameState.correctCount++;
+            }
+            gameState.currentMcqIndex++;
+            loadMCQ();
+        } else {
+            updateScore(-10); // 수정된 점수 (-10)
+            gameState.wrongAttempts++;
+            gameState.currentMcqFailed = true; 
+            btnElement.classList.add('wrong');
+            if (event) showMinusAnimation(event);
+        }
+    }
+
+    function endGame() {
+        clearInterval(gameState.timerInterval);
+        document.getElementById('main-ui').style.display = 'none';
+        switchScreen('result-screen');
+
+        const timeTaken = 180 - gameState.timeRemaining;
+        const m = Math.floor(timeTaken / 60);
+        const s = timeTaken % 60;
+        const timeString = timeTaken >= 180 ? "시간 초과 (3분)" : `${m}분 ${s}초`;
+
+        let feedbackMsg = "";
+        if (gameState.correctCount >= 17) {
+            feedbackMsg = '대단해요! 우수한 성적입니다.';
+        } else if (gameState.correctCount >= 13) {
+            feedbackMsg = '안정적인 실력입니다. 조금만 더 보완하면 최고점에 도달하겠어요.';
+        } else {
+            feedbackMsg = '기초를 잘 다지고 있습니다. 다음번 성장이 기대됩니다.';
+        }
+
+        document.getElementById('res-name').innerText = gameState.nickname;
+        document.getElementById('res-score').innerText = gameState.score;
+        document.getElementById('res-correct').innerText = gameState.correctCount;
+        document.getElementById('res-time').innerText = timeString;
+        document.getElementById('res-wrong').innerText = gameState.wrongAttempts;
+        document.getElementById('res-feedback').innerText = feedbackMsg;
+    }
+
+    function copyResults() {
+        const timeTaken = 180 - gameState.timeRemaining;
+        const m = Math.floor(timeTaken / 60);
+        const s = timeTaken % 60;
+        const timeString = timeTaken >= 180 ? "시간 초과" : `${m}분 ${s}초`;
+        const feedbackMsg = document.getElementById('res-feedback').innerText;
+
+        const textToCopy = `⚖️ [교육활동보호 연수(법률 용어편) 결과]\n👤 닉네임: ${gameState.nickname}\n⭐ 최종 점수: ${gameState.score}점\n🎯 정답 횟수: ${gameState.correctCount} / 20\n⏱️ 소요 시간: ${timeString}\n❌ 오답 횟수: ${gameState.wrongAttempts}회\n\n💡 ${feedbackMsg}`;
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            alert('결과가 클립보드에 복사되었습니다! 친구나 선생님께 공유해보세요.');
+        }).catch(err => {
+            alert('복사에 실패했습니다. 브라우저 설정을 확인해주세요.');
+        });
+    }
+</script>
+
+</body>
+</html>
