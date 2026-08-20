@@ -3,514 +3,1201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>교육활동 보호 연수(만든이: 최창훈)</title>
+    <title>교육활동보호 연수(법률 용어편)</title>
     <style>
+        /* 외부 폰트를 불러오지 못해도(학교망 차단·인터넷 지연) 화면이
+           깨지지 않도록 시스템 한글 폰트를 폴백으로 지정했습니다. */
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
-        
+
         :root {
-            --bg-color: #fdf6e3;
-            --primary: #8ac6d1;
-            --primary-hover: #7bb5c0;
-            --secondary: #ffb6b9;
-            --success: #c8e6c9;
-            --text-main: #333;
-            --card-bg: #fff;
-            --drop-bg: #f0f4f8;
+            --font-main: 'Noto Sans KR', 'Pretendard', 'Apple SD Gothic Neo',
+                         'Malgun Gothic', '맑은 고딕', 'NanumGothic', '나눔고딕',
+                         'Helvetica Neue', Arial, sans-serif;
+            /* 실제 사례 편과 같은 봄 팔레트 */
+            --spring-bg: #FFF9F9;
+            --spring-primary: #FFB7B2;
+            --spring-primary-dark: #ff9a94;
+            --spring-secondary: #E2F0CB;
+            --spring-accent: #FFDAC1;
+            --text-dark: #4A4A4A;
+            --drop-bg: #FDF6F5;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg-color); color: var(--text-main); }
-        
+        body { font-family: var(--font-main); background-color: var(--spring-bg); color: var(--text-dark); }
+
         .container { max-width: 900px; margin: 0 auto; padding: 20px; text-align: center; }
-        
-        /* Screens */
-        .screen { display: none; animation: fadeIn 0.5s ease; }
+
+        .screen { display: none; animation: fadeIn 0.4s ease; }
         .screen.active { display: block; }
-        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Header (Status) */
-        .status-bar { display: flex; justify-content: space-between; background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; font-weight: bold; }
-        .status-item { font-size: 1.1rem; }
-        
-        /* Start Screen */
-        .start-box { background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); margin-top: 10vh; }
-        .start-box h1 { color: var(--primary); margin-bottom: 20px; }
-        input[type="text"] { padding: 12px 20px; font-size: 1.1rem; border: 2px solid #e0e0e0; border-radius: 8px; outline: none; margin-bottom: 20px; width: 80%; max-width: 300px; transition: border-color 0.3s; }
-        input[type="text"]:focus { border-color: var(--primary); }
-        
-        button { background-color: var(--primary); color: white; border: none; padding: 12px 24px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        button:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
+        h1, h2, h3 { color: var(--text-dark); }
 
-        /* Matching Screen */
-        .game-layout { display: flex; gap: 20px; text-align: left; align-items: stretch; }
-        .drop-zones { flex: 2; display: flex; flex-direction: column; gap: 15px; }
-        .drag-items { flex: 1; display: flex; flex-direction: column; gap: 10px; background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        
-        .drop-zone { background: var(--drop-bg); border: 2px dashed #b0bec5; border-radius: 12px; padding: 15px; display: flex; align-items: center; justify-content: space-between; min-height: 80px; gap: 15px; transition: 0.3s; }
-        .drop-zone.hover { background-color: #e3f2fd; border-color: var(--primary); }
-        .drop-zone.correct { background-color: var(--success); border-color: #81c784; border-style: solid; }
-        .def-text { flex: 1; font-size: 0.95rem; line-height: 1.4; }
-        .slot { width: 120px; height: 40px; background: #fff; border-radius: 8px; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; }
-        .drop-zone.correct .slot { background: transparent; border: none; font-size: 1.1rem; color: #2e7d32; }
+        /* 만화 컷 스타일 (실제 사례 편과 통일) */
+        .panel {
+            background: #fff; border: 3px solid var(--text-dark); border-radius: 12px;
+            padding: 22px; box-shadow: 5px 5px 0 var(--spring-primary);
+            margin-bottom: 20px; text-align: left;
+        }
 
-        .drag-item { background: var(--secondary); color: #fff; padding: 12px; border-radius: 8px; text-align: center; cursor: grab; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.2s; user-select: none; }
-        .drag-item:active { cursor: grabbing; transform: scale(0.95); }
+        .status-bar {
+            display: flex; justify-content: space-between; gap: 8px; background: #fff;
+            padding: 14px; border-radius: 12px; box-shadow: 0 4px 10px rgba(255,183,178,0.25);
+            margin-bottom: 18px; font-weight: bold; flex-wrap: wrap;
+        }
+        .status-item { font-size: 1rem; }
+        .status-item .stage-tag { font-size: 0.72rem; color: #fff; background: var(--spring-primary); padding: 2px 8px; border-radius: 20px; margin-left: 4px; vertical-align: middle; }
+
+        .start-box { background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 24px rgba(255,183,178,0.25); margin-top: 4vh; }
+        .start-box h1 { margin-bottom: 8px; font-size: 1.5rem; }
+        .start-lead { color: #8A8281; font-size: 0.92rem; line-height: 1.6; margin-bottom: 20px; }
+
+        input[type="text"] {
+            font-family: var(--font-main);
+            padding: 12px 20px; font-size: 1.05rem; border: 2px solid var(--spring-primary);
+            border-radius: 10px; outline: none; margin-bottom: 16px; width: 80%; max-width: 320px;
+            text-align: center; transition: border-color 0.3s;
+        }
+        input[type="text"]:focus { border-color: var(--spring-primary-dark); }
+
+        button {
+            font-family: var(--font-main);
+            background-color: var(--spring-primary); color: #fff; border: none;
+            padding: 13px 24px; font-size: 1.05rem; border-radius: 10px; cursor: pointer;
+            transition: 0.2s; font-weight: bold; box-shadow: 0 4px 8px rgba(255,183,178,0.35);
+        }
+        button:hover { background-color: var(--spring-primary-dark); transform: translateY(-2px); }
+        .btn-wide { width: 100%; margin-top: 6px; }
+        .btn-sub { background: var(--spring-secondary); color: var(--text-dark); box-shadow: none; border: 2px solid #C5E1A5; }
+        .btn-sub:hover { background: #d3e7b6; }
+
+        /* 모드 선택 */
+        .mode-select { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 10px; }
+        .mode-btn {
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            padding: 16px 10px; background: #fff; color: var(--text-dark);
+            border: 3px solid #E8E0DE; font-size: 1em; box-shadow: none;
+        }
+        .mode-btn small { font-size: 0.7em; font-weight: 400; color: #999; line-height: 1.3; }
+        .mode-btn:hover { background: #FFF8F2; transform: none; }
+        .mode-btn.selected { border-color: var(--spring-primary); background: #FFF3F1; box-shadow: 0 0 0 3px rgba(255,183,178,0.25); }
+        .mode-btn.selected small { color: #B08A86; }
+        .mode-desc { background: #FDFBFA; border: 2px dashed #EFE4E1; border-radius: 12px; padding: 14px 16px; margin: 0 0 18px; font-size: 0.83em; color: #8A8281; line-height: 1.6; text-align: left; }
+        .mode-tagline { margin: 0 0 10px; text-align: center; font-weight: bold; color: #B0817C; font-size: 1.02em; }
+        .mode-desc ul { margin: 0; padding: 0; list-style: none; }
+        .mode-desc li { padding: 4px 0; border-top: 1px solid #F2EAE8; }
+        .mode-desc li:first-child { border-top: none; }
+        .mode-desc li b { display: inline-block; min-width: 42px; color: var(--text-dark); }
+
+        /* 짝짓기 화면 */
+        .round-head { text-align: left; margin-bottom: 12px; }
+        .round-head h2 { font-size: 1.1rem; }
+        .round-head p { font-size: 0.85rem; color: #8A8281; margin-top: 4px; line-height: 1.5; }
+        .how-to { display: block; background: #FFF3E0; border-left: 5px solid #FFB74D; border-radius: 8px;
+                  padding: 10px 14px; font-size: 0.85rem; color: #7A6A5A; margin-bottom: 14px; text-align: left; line-height: 1.5; }
+
+        .game-layout { display: flex; gap: 18px; text-align: left; align-items: flex-start; }
+        .drop-zones { flex: 2; display: flex; flex-direction: column; gap: 12px; }
+        .drag-items { flex: 1; display: flex; flex-direction: column; gap: 10px; background: #fff; padding: 14px; border-radius: 12px; box-shadow: 0 4px 10px rgba(255,183,178,0.2); }
+
+        .drop-zone {
+            background: var(--drop-bg); border: 2px dashed #E0CFCC; border-radius: 12px; padding: 14px;
+            display: flex; align-items: center; justify-content: space-between; min-height: 78px; gap: 12px; transition: 0.25s;
+        }
+        .drop-zone.hover { background-color: #FFF0EE; border-color: var(--spring-primary); }
+        .drop-zone.correct { background-color: #EFF7E4; border-color: #A5D6A7; border-style: solid; }
+        .def-text { flex: 1; font-size: 0.92rem; line-height: 1.5; }
+        .slot { width: 150px; min-height: 42px; flex-shrink: 0; background: #fff; border-radius: 8px; border: 1px dashed #ddd;
+                display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.82rem; text-align: center; padding: 4px; line-height: 1.3; }
+        .drop-zone.correct .slot { background: transparent; border: none; color: #2E7D32; font-size: 0.9rem; }
+
+        .drag-item {
+            background: var(--spring-accent); color: #6B4F3F; padding: 11px 10px; border-radius: 8px; text-align: center;
+            cursor: grab; font-weight: bold; font-size: 0.88rem; line-height: 1.3;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08); transition: 0.2s; user-select: none;
+        }
+        .drag-item:active { cursor: grabbing; transform: scale(0.96); }
         .drag-item.dragging { opacity: 0.5; }
-        .drag-item.selected { box-shadow: 0 0 0 4px rgba(255,182,185,0.5); transform: scale(1.05); }
-        
-        .mobile-hint { display: none; font-size: 0.9rem; color: #666; margin-bottom: 10px; font-weight: bold; }
+        .drag-item.selected { box-shadow: 0 0 0 4px rgba(255,183,178,0.6); transform: scale(1.04); }
 
-        /* MCQ Screen */
-        .mcq-box { background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-        .mcq-question { font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; background: var(--drop-bg); padding: 20px; border-radius: 12px; }
-        .mcq-options { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        .option-btn { background: #fff; color: var(--text-main); border: 2px solid var(--primary); padding: 15px; font-size: 1rem; border-radius: 8px; font-weight: normal; transition: 0.2s; cursor: pointer; }
-        .option-btn:hover { background: var(--primary); color: #fff; }
-        
-        .option-btn.wrong { background-color: #ffebee; border-color: #ffcdd2; color: #c62828; cursor: not-allowed; }
-        .option-btn.wrong:hover { background-color: #ffebee; color: #c62828; }
+        /* 라운드 정리 카드 */
+        .note-card { background: #fff; border: 2px solid var(--spring-accent); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; text-align: left; }
+        .note-card .nc-term { font-weight: bold; color: #C1665F; font-size: 0.98rem; }
+        .note-card .nc-full { font-size: 0.76rem; color: #A79B99; margin-top: 2px; }
+        .note-card .nc-note { font-size: 0.88rem; line-height: 1.6; margin-top: 8px; }
+        .note-card .nc-src { font-size: 0.75rem; color: #B5ABA9; margin-top: 8px; border-top: 1px dashed #eee; padding-top: 6px; }
+        .note-card.missed { border-color: #FFAB91; background: #FFF8F6; }
 
-        /* Result Screen */
-        .result-box { background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); margin-top: 5vh; }
-        .result-box h1 { margin-bottom: 20px; color: var(--primary); }
-        .stat-list { list-style: none; padding: 0; margin-bottom: 20px; font-size: 1.2rem; line-height: 2; }
-        .stat-list span { font-weight: bold; color: var(--secondary); }
-        #res-feedback { font-size: 1.3rem; font-weight: bold; color: #ff7675; margin-bottom: 30px; background: #ffeaa7; display: inline-block; padding: 10px 20px; border-radius: 8px; }
+        /* 퀴즈 화면 */
+        .mcq-question { font-size: 1.02rem; font-weight: bold; line-height: 1.6; background: var(--drop-bg); padding: 18px; border-radius: 12px; margin-bottom: 16px; text-align: left; }
+        .mcq-question .q-lead { display: block; color: #C1665F; font-size: 0.82rem; margin-bottom: 8px; font-weight: bold; }
+        .mcq-options { display: grid; grid-template-columns: 1fr; gap: 9px; }
+        .option-btn { background: #fff; color: var(--text-dark); border: 2px solid var(--spring-accent); padding: 14px; font-size: 0.95rem; border-radius: 8px; font-weight: normal; text-align: left; box-shadow: none; }
+        .option-btn:hover { background: var(--spring-accent); transform: none; }
+        .option-btn.wrong { background-color: #FFEBEE; border-color: #FFCDD2; color: #C62828; cursor: not-allowed; }
+        .option-btn.wrong:hover { background-color: #FFEBEE; }
 
-        /* -10점 애니메이션 스타일 */
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-50px) scale(1.2); }
+        #verdict { border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; font-weight: bold; font-size: 0.95rem; line-height: 1.5; text-align: left; }
+        #verdict.ok { background: #E8F5E9; border: 2px solid #A5D6A7; color: #2E7D32; }
+        #verdict.no { background: #FFEBEE; border: 2px solid #FFCDD2; color: #C62828; }
+        #verdict .answer-line { display: block; margin-top: 6px; font-weight: 400; color: var(--text-dark); font-size: 0.92em; }
+
+        /* 결과 화면 */
+        .stat-list { list-style: none; padding: 0; margin-bottom: 16px; font-size: 1.02rem; line-height: 1.9; text-align: left; }
+        .stat-list span { font-weight: bold; color: #C1665F; }
+        #res-feedback { font-size: 1.05rem; font-weight: bold; color: #6B5B4F; background: #FFF3E0; display: block; padding: 12px 16px; border-radius: 10px; line-height: 1.5; }
+
+        .section-title { text-align: left; font-size: 1.02rem; margin: 24px 0 10px; padding-left: 10px; border-left: 6px solid var(--spring-primary); }
+        .section-lead { font-size: 0.85rem; color: #8A8281; margin: -4px 0 12px; padding-left: 16px; line-height: 1.5; text-align: left; }
+        .stage-label { font-size: 0.8rem; font-weight: bold; color: #9E9491; text-align: left; margin: 14px 0 6px; }
+
+        .notice { display: none; background: #E8F5E9; border: 2px dashed #A5D6A7; color: #388E3C; border-radius: 10px; padding: 10px 14px; font-size: 0.85rem; text-align: center; margin-bottom: 14px; line-height: 1.4; }
+
+        #back-notice {
+            display: none; position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+            background: rgba(74,74,74,0.92); color: #fff; padding: 12px 20px; border-radius: 30px;
+            font-size: 0.85rem; z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.2); max-width: 90%; text-align: center;
         }
-        .minus-score-anim {
-            position: fixed;
-            color: #ff4c4c;
-            font-weight: bold;
-            font-size: 1.8rem;
-            animation: floatUp 1s ease-out forwards;
-            pointer-events: none;
-            z-index: 9999;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
 
-        /* Responsive */
+        .prologue { text-align: center; font-size: 0.95rem; line-height: 1.65; background: #FFFDFC; }
+        .decoy-note { font-size: 0.82rem; color: #8A8281; background: #FDF6F5; border-radius: 8px; padding: 10px 12px; margin-top: 4px; text-align: left; line-height: 1.5; }
+
+        /* 비교 카드 */
+        .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+        .vs-col { border: 2px solid #E0E0E0; border-radius: 10px; padding: 14px; font-size: 0.86rem; line-height: 1.6; background: #fff; text-align: left; }
+        .vs-col.left { border-color: var(--spring-primary); }
+        .vs-col.right { border-color: #90CAF9; }
+        .vs-col h4 { margin: 0 0 8px; font-size: 0.92rem; }
+        .vs-col.left h4 { color: #E57373; }
+        .vs-col.right h4 { color: #1976D2; }
+        .vs-key { background: #F3F9F1; border-radius: 8px; padding: 12px 14px; font-size: 0.86rem; line-height: 1.6; text-align: left; }
+        .vs-key b { color: #388E3C; }
+        .qna-a { font-size: 0.88rem; line-height: 1.7; text-align: left; padding-top: 10px; }
+
+        .fold { border: 2px solid var(--spring-accent); border-radius: 12px; margin-bottom: 10px; overflow: hidden; background: #fff; }
+        .fold-head { padding: 13px 16px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 10px; background: #FFF8F2; font-size: 0.92rem; text-align: left; }
+        .fold-head:hover { background: var(--spring-accent); }
+        .fold-head .arrow { color: #999; font-size: 0.8em; transition: transform 0.2s; flex-shrink: 0; }
+        .fold.open .fold-head .arrow { transform: rotate(180deg); }
+        .fold-body { display: none; padding: 0 14px 14px; }
+        .fold.open .fold-body { display: block; }
+
+        .credit { text-align: center; font-size: 0.72rem; color: #CFC6C4; letter-spacing: 0.5px; margin: 14px 0 0; }
+
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-50px) scale(1.2); } }
+        .score-anim { position: fixed; font-weight: bold; font-size: 1.6rem; animation: floatUp 1s ease-out forwards; pointer-events: none; z-index: 9999; text-shadow: 1px 1px 2px rgba(0,0,0,0.15); }
+        .score-anim.plus { color: #4CAF50; }
+        .score-anim.minus { color: #F44336; }
+
         @media (max-width: 768px) {
             .game-layout { flex-direction: column; }
             .drag-items { flex-direction: row; flex-wrap: wrap; justify-content: center; position: sticky; bottom: 0; z-index: 10; border-radius: 12px 12px 0 0; }
-            .drag-item { padding: 10px 15px; font-size: 0.9rem; }
-            .mobile-hint { display: block; }
+            .drag-item { padding: 10px 14px; font-size: 0.85rem; }
+            .slot { width: 110px; font-size: 0.76rem; }
+            .mode-select { grid-template-columns: 1fr; }
+            .vs-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    
+
     <div id="start-screen" class="screen active">
         <div class="start-box">
-            <h1>⚖️ 교육활동보호 연수(법률 용어편)</h1>
-            <p style="margin-bottom: 20px; color: #666;">제한시간 3분! 용어와 뜻을 연결하고 퀴즈를 풀어보세요.</p>
-            <input type="text" id="nickname-input" placeholder="닉네임을 입력하세요" autocomplete="off">
+            <h1>⚖️ 교육활동보호 연수<br><span style="font-size:0.7em; color:#8A8281;">(법률 용어편)</span></h1>
+            <div class="panel prologue">
+                📖 <b>왜 용어부터 하는가</b><br><br>
+                교권 침해를 겪은 선생님이 가장 먼저 부딪히는 벽은<br>
+                사건이 아니라 <b>말</b>입니다.<br><br>
+                이게 폭행인지 상해인지,<br>
+                모욕인지 명예훼손인지<br>
+                <b>부를 이름이 없으면 신고서 한 줄을 쓸 수 없습니다.</b><br><br>
+                오늘은 그 이름들을 익힙니다.
+            </div>
+            <p class="start-lead">
+                1단계 — 형법 등 다른 법률의 범죄 행위 <b>15개</b><br>
+                2단계 — 교원지위법에만 있는 침해행위 유형 <b>7개</b><br>
+                <span style="color:#B0817C;">이 연수를 마치면 「실제 사례 편」으로 이어집니다.</span>
+            </p>
+
+            <div class="mode-select">
+                <button type="button" class="mode-btn selected" id="mode-solo" onclick="setMode('solo')">
+                    🙋 개인전<small>5분 제한 · 혼자 익히기</small>
+                </button>
+                <button type="button" class="mode-btn" id="mode-team" onclick="setMode('team')">
+                    👥 모둠전<small>시간 제한 없음 · 함께 상의</small>
+                </button>
+            </div>
+            <div class="mode-desc" id="mode-desc"></div>
+
+            <input type="text" id="nickname-input" placeholder="닉네임을 입력하세요" autocomplete="off" maxlength="12">
             <br>
-            <button onclick="startGame()">게임 시작하기</button>
+            <button id="start-btn" onclick="startGame()">게임 시작하기 (제한시간 6분)</button>
+            <p class="credit">만든이 2026 최창훈</p>
         </div>
     </div>
 
-    <div id="main-ui" style="display: none;">
+    <div id="main-ui" style="display:none;">
         <div class="status-bar">
             <div class="status-item">👤 <span id="display-name"></span></div>
-            <div class="status-item">⏱️ <span id="display-time">03:00</span></div>
+            <div class="status-item" id="display-progress">1단계</div>
+            <div class="status-item" id="display-time-box">⏱️ <span id="display-time">06:00</span></div>
             <div class="status-item">⭐ <span id="display-score">0</span>점</div>
         </div>
+        <div id="resume-notice" class="notice">🔄 이어서 진행합니다. 풀던 라운드와 점수가 그대로입니다.</div>
 
         <div id="matching-screen" class="screen">
-            <p class="mobile-hint">💡 팁: 단어를 터치(클릭)하고, 알맞은 빈칸을 터치해도 연결됩니다!</p>
+            <div class="round-head">
+                <h2 id="round-title">1단계 · 1라운드</h2>
+                <p id="round-sub">설명을 읽고 알맞은 용어를 오른쪽에서 찾아 옮기세요.</p>
+            </div>
+            <p class="how-to">💡 용어를 <b>드래그</b>해서 빈칸에 놓거나, 용어를 <b>한 번 누른 뒤 빈칸을 눌러도</b> 연결됩니다.</p>
             <div class="game-layout">
                 <div class="drop-zones" id="drop-zones"></div>
                 <div class="drag-items" id="drag-items"></div>
             </div>
         </div>
 
+        <div id="summary-screen" class="screen">
+            <h2 class="section-title" id="summary-title">📕 이번 라운드 용어 정리</h2>
+            <p class="section-lead">짝을 맞힌 용어입니다. 오해하기 쉬운 부분만 짚었습니다.</p>
+            <div id="summary-list"></div>
+            <button class="btn-wide" id="summary-next" onclick="afterSummary()">다음으로 →</button>
+        </div>
+
+        <div id="stage-screen" class="screen">
+            <h2 class="section-title">🔀 여기서부터 성격이 달라집니다</h2>
+            <p class="section-lead">1단계와 2단계는 다루는 기관도, 결과도 다릅니다.</p>
+            <div class="vs-grid">
+                <div class="vs-col left">
+                    <h4>1단계 · 범죄 행위</h4>
+                    형법, 성폭력처벌법, 정보통신망법, 통신비밀보호법, 스토킹처벌법 등에서
+                    <b>형사처벌 대상으로 정한 행위</b>입니다.<br><br>
+                    그 자체로 <b>범죄</b>이고, 수사기관이 다룹니다. 동시에 교육활동 침해행위이기도 합니다.
+                </div>
+                <div class="vs-col right">
+                    <h4>2단계 · 교원지위법 고유 유형</h4>
+                    형법에는 없지만 <b>교원지위법이 침해행위로 규정한 행위</b>입니다.<br><br>
+                    범죄는 아니지만 <b>교육활동 침해행위</b>이고, <b>지역교권보호위원회</b>가 심의합니다.
+                </div>
+            </div>
+            <div class="vs-key">🔑 고소할 일과 교권보호위원회에 갈 일은 다릅니다. 하나의 사안이 양쪽에 모두 해당할 수도 있습니다.</div>
+            <button class="btn-wide" onclick="continueStage()" style="margin-top:16px;">2단계 시작하기 →</button>
+        </div>
+
         <div id="mcq-screen" class="screen">
-            <div class="mcq-box">
-                <h2>📝 마무리 퀴즈 (<span id="mcq-progress">1</span>/5)</h2>
-                <div class="mcq-question" id="mcq-q-text">질문 내용</div>
+            <div class="panel">
+                <h2 style="font-size:1.05rem; margin-bottom:14px;">📝 마무리 퀴즈 (<span id="mcq-progress">1</span>/<span id="mcq-total">6</span>)</h2>
+                <div class="mcq-question" id="mcq-q-text"></div>
                 <div class="mcq-options" id="mcq-options-container"></div>
+                <div id="mcq-explain" style="display:none;">
+                    <div id="verdict"></div>
+                    <div id="explain-body"></div>
+                    <button class="btn-wide" id="mcq-next" onclick="nextMcq()">다음 문제 →</button>
+                </div>
             </div>
         </div>
     </div>
 
     <div id="result-screen" class="screen">
-        <div class="result-box">
-            <h1>🎉 게임 종료!</h1>
+        <div class="panel" style="text-align:center;">
+            <h1 style="font-size:1.4rem; margin-bottom:16px;">🎓 법률 용어편 종료</h1>
             <ul class="stat-list">
-                <li>플레이어: <span id="res-name"></span></li>
+                <li>참가: <span id="res-name"></span></li>
                 <li>최종 점수: <span id="res-score"></span>점</li>
-                <li>정답 횟수: <span id="res-correct"></span> / 20</li>
+                <li>정답: <span id="res-correct"></span> / <span id="res-total"></span></li>
+                <li>첫 시도에 맞힌 용어: <span id="res-firsttry"></span> / <span id="res-terms"></span></li>
+                <li>오답 시도: <span id="res-wrong"></span>회</li>
                 <li>소요 시간: <span id="res-time"></span></li>
-                <li>오답 횟수: <span id="res-wrong"></span>회</li>
             </ul>
-            <div id="res-feedback">결과 메시지</div>
-            <br>
-            <button onclick="copyResults()" style="background-color: var(--secondary);">📋 결과 복사하기</button>
-            <button onclick="location.reload()" style="margin-left: 10px;">다시 하기</button>
+            <div id="res-feedback"></div>
         </div>
+
+        <h2 class="section-title">📕 놓친 용어 다시 읽기</h2>
+        <p class="section-lead" id="missed-lead"></p>
+        <div id="missed-list"></div>
+        <button class="btn-sub btn-wide" id="show-all-btn" onclick="renderGlossary(true)">📚 용어 사전 전체 펼쳐 보기</button>
+
+        <h2 class="section-title">⚖️ 헷갈리는 짝 비교</h2>
+        <p class="section-lead">말이 비슷해서 가장 자주 뒤바뀌는 다섯 쌍입니다. 제목을 눌러 펼쳐 보세요.</p>
+        <div id="compare-list"></div>
+
+        <h2 class="section-title">❓ 자주 나오는 질문</h2>
+        <p class="section-lead">매뉴얼이 따로 뽑아 둔 질문들입니다. 현장에서 판단이 막히는 지점이 여기입니다.</p>
+        <div id="qna-list"></div>
+
+        <div id="next-step" style="display:none; margin-top:24px;">
+            <h2 class="section-title">🌸 다음 순서</h2>
+            <p class="section-lead">이제 용어를 실제 사건에 대입해 볼 차례입니다.</p>
+            <button class="btn-wide" onclick="goNext()">실제 사례 편으로 이동 →</button>
+        </div>
+
+        <button class="btn-wide" onclick="copyResults()" style="margin-top:20px;">📋 결과 복사하기</button>
+        <button class="btn-sub btn-wide" onclick="restart()">🔄 처음부터 다시하기</button>
     </div>
 
 </div>
 
+<div id="back-notice">뒤로가기로는 나갈 수 없습니다. 연수를 계속 진행해 주세요.</div>
+
 <script>
-    const originalData = [
-        { term: "공무방해", def: "국·공립학교 교원의 공무를 폭행 또는 협박, 위계로 방해하는 경우" },
-        { term: "무고", def: "타인으로 하여금 처벌 등을 받게 할 목적으로 허위 사실을 신고하는 행위" },
-        { term: "상해", def: "타인의 신체적 건강을 훼손하거나 생리적 기능에 장애를 일으키는 행위" },
-        { term: "폭행", def: "타인의 신체에 대해 위법한 물리력을 행사하는 행위 (접촉 불문)" },
-        { term: "협박", def: "사람에게 공포심을 일으킬 수 있는 정도의 해악을 고지하는 행위" },
-        { term: "명예훼손", def: "공연히 사실 또는 허위 사실을 적시하여 타인의 명예를 훼손하는 행위" },
-        { term: "모욕", def: "공연히 특정한 사람을 향해 경멸적 감정을 표현하는 행위" },
-        { term: "손괴", def: "타인의 재물, 문서 등을 훼손하거나 숨겨 그 효용을 해치는 행위" },
-        { term: "불법정보 유통 행위", def: "정보통신망을 통해 비방 목적 허위사실, 음란물, 공포심 유발 메시지 등을 보내는 행위" },
-        { term: "성범죄", def: "강제 추행, 불법 촬영, 통신매체를 이용한 음란행위 등" },
-        { term: "강요", def: "폭행이나 협박으로 상대방이 하지 않아도 될 일을 억지로 하게 하는 행위" },
-        { term: "스토킹 범죄", def: "상대방 의사에 반해 정당한 이유 없이 지속적으로 따라다니며 불안감을 주는 행위" },
-        { term: "불법 녹음", def: "공개되지 않은 타인 간의 대화를 동의 없이 몰래 녹음하는 행위" },
-        { term: "퇴거불응죄", def: "정당한 권한을 가진 사람으로부터 나가달라는 요구를 받고도 응하지 않는 행위" },
-        { term: "업무방해", def: "허위 사실을 유포하거나 위계 또는 위력으로써 사람의 업무를 방해하는 행위" }
+    /* ▼ 실제 사례 편을 배포한 주소를 넣으면 결과 화면에 이동 버튼이 나타납니다.
+         비워 두면 버튼이 표시되지 않습니다. */
+    const NEXT_URL = "";
+
+    /* ─────────────────────────────────────────────────────────
+       1단계 : 형법 등 다른 법률의 범죄 행위 (15개)
+       2단계 : 교원지위법에만 있는 침해행위 유형 (6개)
+       term  = 화면에 붙이는 짧은 이름 / full = 정식 명칭
+       note  = 짝을 맞힌 뒤 보여주는 '오해하기 쉬운 한 줄'
+       ───────────────────────────────────────────────────────── */
+    const TERMS = [
+        // ── 1단계 : 형법 등 범죄 행위 ──
+        { term: "공무방해", stage: 1,
+          full: "공무집행방해 (형법 제8장)",
+          def: "국·공립학교 교원의 공무를 폭행 또는 협박, 위계로 방해하는 경우",
+          note: "국·공립학교 교원의 교육활동은 그 자체가 직무집행입니다. 같은 행동이라도 사립학교라면 업무방해가 됩니다.",
+          src: "매뉴얼 90쪽" },
+        { term: "업무방해", stage: 1,
+          full: "업무방해 (형법 제314조)",
+          def: "허위 사실을 유포하거나 위계 또는 위력으로써 사람의 업무를 방해하는 행위",
+          note: "사립학교 교원에게 적용됩니다. '위력'에는 폭행·협박뿐 아니라 사회적·경제적 지위에 의한 압박도 들어갑니다.",
+          src: "매뉴얼 90쪽" },
+        { term: "무고", stage: 1,
+          full: "무고 (형법 제156조)",
+          def: "타인으로 하여금 처벌 등을 받게 할 목적으로 허위 사실을 신고하는 행위",
+          note: "형사 고소만이 아닙니다. 국민신문고 민원이나 교육청 진정도 여기에 포함됩니다.",
+          src: "매뉴얼 91쪽" },
+        { term: "상해", stage: 1,
+          full: "상해 (형법 제2편 제25장)",
+          def: "타인의 신체적 건강을 훼손하거나 생리적 기능에 장애를 일으키는 행위",
+          note: "때린 적이 없어도 됩니다. 지속적인 폭언과 고성으로 교원이 수면장애나 우울증을 겪게 됐다면 상해입니다.",
+          src: "매뉴얼 92쪽" },
+        { term: "폭행", stage: 1,
+          full: "폭행 (형법 제2편 제25장)",
+          def: "타인의 신체에 대해 위법한 물리력을 행사하는 행위 (접촉 불문)",
+          note: "몸에 닿지 않아도 됩니다. 때릴 듯이 팔을 휘두르거나 물건을 던져 빗나가도 폭행입니다.",
+          src: "매뉴얼 92쪽" },
+        { term: "협박", stage: 1,
+          full: "협박 (형법 제2편 제30장)",
+          def: "사람에게 공포심을 일으킬 수 있는 정도의 해악을 고지하는 행위",
+          note: "실제로 실행할 마음이 없었어도, 상대가 겁먹지 않았어도 성립할 수 있습니다. 다만 고소하겠다는 예고만으로는 협박이 아닙니다.",
+          src: "매뉴얼 93쪽" },
+        { term: "명예훼손", stage: 1,
+          full: "명예훼손 (형법 제2편 제33장)",
+          def: "공연히 사실 또는 허위 사실을 적시하여 타인의 명예를 훼손하는 행위",
+          note: "진실한 사실을 말해도 성립할 수 있습니다. 다만 오로지 공공의 이익에 관한 것이면 처벌하지 않습니다.",
+          src: "매뉴얼 94쪽" },
+        { term: "모욕", stage: 1,
+          full: "모욕 (형법 제2편 제33장)",
+          def: "공연히 특정한 사람을 향해 경멸적 감정을 표현하는 행위",
+          note: "사실을 말하지 않고 감정만 표현한 경우입니다. 1:1 문자나 통화는 공연성이 없어 모욕죄가 되기 어렵습니다.",
+          src: "매뉴얼 94쪽" },
+        { term: "손괴", stage: 1,
+          full: "손괴 (형법 제2편 제42장)",
+          def: "타인의 재물, 문서 등을 훼손하거나 숨겨 그 효용을 해치는 행위",
+          note: "부수는 것만이 아닙니다. 숨겨서 일시적으로 못 쓰게 하는 것도 효용을 해한 것입니다.",
+          src: "매뉴얼 96쪽" },
+        { term: "성범죄", stage: 1,
+          full: "성폭력범죄 (성폭력처벌법 제2조제1항)",
+          def: "강제 추행, 불법 촬영, 통신매체를 이용한 음란행위 등",
+          note: "가해자에게 성욕을 만족시키려는 목적이 없어도 추행은 성립합니다. 2024년 10월 16일 시행 개정법에 따라 불법촬영물을 소지·저장하거나 시청만 해도 처벌 대상이고, 얼굴·신체·음성을 성적으로 편집·합성하는 행위는 반포 목적이 없어도 범죄입니다.",
+          src: "매뉴얼 97쪽" },
+        { term: "불법정보 유통", stage: 1,
+          full: "불법정보 유통 행위 (정보통신망법 제44조의7제1항)",
+          def: "정보통신망을 통해 비방 목적 허위사실, 음란물, 공포심 유발 메시지 등을 보내는 행위",
+          note: "인터넷 카페나 단체 채팅방을 거치면 형법상 명예훼손이 아니라 이 유형으로 다룹니다.",
+          src: "매뉴얼 98쪽" },
+        { term: "강요", stage: 1,
+          full: "강요 (형법 제324조)",
+          def: "폭행이나 협박으로 상대방이 하지 않아도 될 일을 억지로 하게 하는 행위",
+          note: "의무 없는 일을 하게 하는 것뿐 아니라, 마땅히 할 수 있는 일을 못 하게 막는 것도 강요입니다.",
+          src: "매뉴얼 101쪽" },
+        { term: "스토킹 범죄", stage: 1,
+          full: "스토킹범죄 (스토킹처벌법)",
+          def: "상대방 의사에 반해 정당한 이유 없이 지속적으로 따라다니며 불안감을 주는 행위",
+          note: "학교 밖, 퇴근 후에 벌어진 일이라도 교육활동 수행에 방해가 되면 침해행위가 됩니다.",
+          src: "매뉴얼 101쪽" },
+        { term: "불법 녹음", stage: 1,
+          full: "통신비밀보호법 위반 녹음 (제14조·제16조)",
+          def: "공개되지 않은 타인 간의 대화를 동의 없이 몰래 녹음하는 행위",
+          note: "보호자가 자녀 가방에 녹음기를 넣으면 '타인 간의 대화'라 위법입니다. 학생 본인이 녹음하면 이 죄는 아닙니다.",
+          src: "매뉴얼 101쪽" },
+        { term: "퇴거불응죄", stage: 1,
+          full: "퇴거불응 (형법 제319조제2항)",
+          def: "정당한 권한을 가진 사람으로부터 나가달라는 요구를 받고도 응하지 않는 행위",
+          note: "들어올 때는 정당했더라도, 나가달라는 요구에 응하지 않으면 그때부터 범죄가 됩니다.",
+          src: "매뉴얼 101쪽" },
+
+        // ── 2단계 : 교원지위법에만 있는 유형 ──
+        { term: "반복적 부당 민원", stage: 2,
+          full: "목적이 정당하지 아니한 민원의 반복 제기",
+          def: "교원을 괴롭히거나 특혜를 얻으려는 부당한 목적으로 학교나 교사에게 반복해서 민원을 제기하는 행위",
+          note: "보호자의 정당한 의견 제시는 교육기본법이 보장합니다. 목적이 정당한지, 반복되는지가 갈림길입니다.",
+          src: "매뉴얼 102쪽" },
+        { term: "반복적 부당 간섭", stage: 2,
+          full: "정당한 교육활동에 대한 반복적 부당 간섭",
+          def: "교원의 교육적 판단과 활동에 반복적으로 부당하게 간섭해 정상적 운영을 방해하는 행위",
+          note: "수업 방식, 평가, 생활기록부 기재, 담임 교체 요구가 여기에 해당합니다. 담임 교체는 비상적 상황에 한해 보충적으로만 허용됩니다.",
+          src: "매뉴얼 105쪽" },
+        { term: "법적 의무 아닌 일 강요", stage: 2,
+          full: "법적 의무가 아닌 일을 지속적으로 강요하는 행위",
+          def: "교사의 직무 범위나 교육과정에 없는 일을 계속하도록 강요하는 행위",
+          note: "고의·중과실이 없는 사고에서 교사 개인에게 손해배상을 계속 요구하는 것이 대표적입니다. 이 경우 배상책임은 국가나 학교법인에 있습니다.",
+          src: "매뉴얼 103쪽" },
+        { term: "의도적 교육활동 방해", stage: 2,
+          full: "정당한 생활지도에 불응하여 의도적으로 교육활동을 방해하는 행위",
+          def: "학생이 교원의 정당한 생활지도에 불응하면서 의도를 가지고 교육활동을 방해하는 행위",
+          note: "단순 불응은 침해행위가 아니라 교육·지도의 대상입니다. 갈림길은 의도성이고, 결과에 무관심한 태도도 의도로 봅니다.",
+          src: "매뉴얼 106쪽" },
+        { term: "영상·음성 무단 배포", stage: 2,
+          full: "교육활동 중인 교원의 영상·화상·음성 등 무단 배포",
+          def: "교육활동 중인 교원의 영상·음성 등을 촬영·녹음·합성해 무단으로 배포하는 행위",
+          note: "학생은 대화의 당사자라 녹음 자체는 범죄가 아니지만, 배포하는 순간 이 유형의 침해행위가 됩니다.",
+          src: "매뉴얼 107쪽" },
+        { term: "성적 언동(성희롱)", stage: 2,
+          full: "성적 언동 등으로 성적 굴욕감 또는 혐오감을 느끼게 하는 행위",
+          def: "교육활동 중인 교원에게 성적인 말·행동으로 성적 굴욕감이나 혐오감을 느끼게 하는 행위",
+          note: "행위자에게 성적 동기나 의도가 없었더라도 성희롱은 성립할 수 있습니다. 같은 처지의 일반적인 교원을 기준으로 객관적으로 판단합니다.",
+          src: "매뉴얼 104쪽" },
+        { term: "학교장 판단 침해행위", stage: 2,
+          full: "그 밖에 학교장이 「교육공무원법」 제43조제1항에 위반한다고 판단하는 행위",
+          def: "앞의 유형에 딱 들어맞지 않더라도, 교권을 존중하지 않거나 교원의 정당한 권한을 침해한다고 학교장이 판단하는 행위",
+          note: "1:1 전화나 문자로 욕설·폭언을 들은 경우처럼 공연성이 없어 모욕죄가 되기 어려운 상황을 메우는 조항입니다. 다만 학교장 판단만으로 확정되지 않고, 지역교권보호위원회 심의로 달라질 수 있습니다.",
+          src: "매뉴얼 108쪽" }
     ];
 
-    let gameState = {
-        nickname: "",
-        score: 0,
-        wrongAttempts: 0,
-        correctCount: 0, 
-        timeRemaining: 180, // 3분 (180초)
-        timerInterval: null,
-        chunks: [],
-        currentChunkIndex: 0,
-        matchesInCurrentRound: 0,
-        mcqQuestions: [],
-        currentMcqIndex: 0,
-        currentMcqFailed: false, 
+    /* 마무리 퀴즈 : 정의문이 아니라 짧은 '사례'로 묻습니다.
+       실제 사례 편으로 넘어가는 다리 역할을 합니다. */
+    const MCQ_POOL = [
+        { answer: "공무방해",
+          text: "공립초등학교 교무실에 들어온 보호자가 고성을 지르며 담임을 불러오라고 소리쳐, 교사의 업무가 30분간 중단되었다.",
+          note: "국·공립학교 교원의 업무를 방해하면 공무방해입니다. 같은 일이 사립학교에서 벌어지면 업무방해가 됩니다." },
+        { answer: "불법 녹음",
+          text: "보호자가 자녀의 가방에 녹음기를 몰래 넣어, 수업 중 교사의 발언을 동의 없이 녹음했다.",
+          note: "수업 중 교사의 발언은 '공개되지 않은 대화'이고, 보호자는 그 대화의 당사자가 아닙니다. 이렇게 얻은 녹음은 재판이나 징계에서 증거로 쓸 수 없습니다." },
+        { answer: "명예훼손",
+          text: "학부모 모임에서 한 보호자가 “그 담임, 촌지 받았다더라”라는 사실무근의 이야기를 여러 사람에게 퍼뜨렸다.",
+          note: "여러 사람에게 퍼진 순간 공연성이 인정됩니다. 반대로 교육청에 허위 민원을 넣은 경우라면 명예훼손이 아니라 무고로 다룹니다." },
+        { answer: "반복적 부당 간섭",
+          text: "보호자가 “지각 처리하지 말라”, “생활기록부를 이렇게 써 달라”는 요구를 학기 내내 반복했다.",
+          note: "생활기록부 기재와 출결 처리는 교원의 재량에 속합니다. 한 번의 의견 제시와 갈리는 기준은 반복성입니다." },
+        { answer: "영상·음성 무단 배포",
+          text: "학생이 수업 중 교사의 발언을 녹음한 뒤, 이를 SNS에 올려 퍼뜨렸다.",
+          note: "학생은 대화의 당사자라 녹음 자체는 통신비밀보호법 위반이 아닙니다. 배포가 성립 요건입니다." },
+        { answer: "법적 의무 아닌 일 강요",
+          text: "학교안전공제회 공제급여가 이미 지급되었는데도, 보호자가 담임교사 개인에게 위자료와 손해배상을 계속 요구하고 있다.",
+          note: "교원에게 고의·중과실이 없으면 배상책임은 국가·지방자치단체 또는 학교법인이 집니다. 교사 개인에게 요구할 일이 아닙니다." }
+    ];
+
+    /* 말이 비슷해 가장 자주 뒤바뀌는 짝 */
+    const COMPARISONS = [
+        {
+            title: "공무방해 vs 업무방해",
+            left: { name: "공무방해", body: "<b>국·공립학교</b> 교원의 직무집행을 폭행·협박하거나 위계로 방해한 경우.<br>교원의 교육활동은 그 자체가 직무집행에 해당합니다." },
+            right: { name: "업무방해", body: "<b>사립학교</b> 교원의 업무를 허위사실 유포나 위계·위력으로 방해한 경우.<br>'위력'에는 사회적·경제적 지위에 의한 압박도 들어갑니다." },
+            key: "행동이 같아도 <b>학교 설립 유형</b>에 따라 죄명이 갈립니다.",
+            src: "매뉴얼 90쪽"
+        },
+        {
+            title: "상해 vs 폭행",
+            left: { name: "상해", body: "신체적 건강을 훼손하거나 생리적 기능에 장애를 일으킨 것.<br>수단은 묻지 않아서, <b>폭언과 고성으로 인한 우울증·수면장애</b>도 상해입니다." },
+            right: { name: "폭행", body: "신체에 대한 위법한 물리력의 행사.<br><b>접촉하지 않아도</b> 성립합니다. 때릴 듯이 팔을 휘두르거나 물건을 던져 빗나가도 폭행입니다." },
+            key: "가르는 기준은 <b>결과</b>입니다. 손대지 않아도 병이 생겼으면 상해, 세게 밀쳤어도 다치지 않았으면 폭행입니다.",
+            src: "매뉴얼 92쪽"
+        },
+        {
+            title: "명예훼손 vs 모욕",
+            left: { name: "명예훼손", body: "구체적 <b>사실을 적시</b>해 사회적 평가를 떨어뜨리는 것.<br>진실한 사실을 말해도 성립할 수 있습니다." },
+            right: { name: "모욕", body: "사실 적시 없이 <b>경멸적 감정</b>만 표현하는 것.<br>욕설, 비하 별명, '멍청하다·함량 미달이다' 같은 말이 해당합니다." },
+            key: "둘 다 <b>공연성</b>이 필요합니다. 1:1 문자나 통화는 공연성이 없어 성립하기 어렵고, 대신 '그 밖에 학교장이 판단하는 행위'로 다룹니다.",
+            src: "매뉴얼 94~96쪽"
+        },
+        {
+            title: "불법 녹음 vs 영상·음성 무단 배포",
+            left: { name: "불법 녹음 (보호자)", body: "보호자가 자녀 가방에 녹음기를 넣은 경우.<br>보호자는 대화 당사자가 아니므로 <b>'타인 간의 대화'</b> → 통신비밀보호법 위반, <b>녹음만으로</b> 형사처벌 대상." },
+            right: { name: "무단 배포 (학생)", body: "학생이 수업을 녹음한 경우.<br>학생은 <b>대화의 상대방</b>이라 녹음 자체는 범죄가 아닙니다. 그러나 <b>배포하면</b> 교원지위법상 침해행위." },
+            key: "누가 녹음했는지로 갈립니다. <b>당사자가 아니면 녹음이 문제, 당사자면 배포가 문제</b>입니다.",
+            src: "매뉴얼 101쪽, 107쪽"
+        },
+        {
+            title: "반복적 부당 민원 vs 반복적 부당 간섭",
+            left: { name: "반복적 부당 민원", body: "국민신문고·교육청 등 <b>바깥 창구를 통해</b> 목적이 정당하지 않은 민원을 되풀이하는 것.<br>교사의 연수 이수 내역이나 교원단체 가입 여부를 캐묻는 민원이 예시입니다." },
+            right: { name: "반복적 부당 간섭", body: "교원의 <b>교육활동 자체에 직접</b> 반복해서 끼어드는 것.<br>수업 방식, 평가, 생활기록부 기재, 담임 교체 요구가 예시입니다." },
+            key: "<b>민원이라는 형식을 빌렸는지, 교육활동에 직접 손을 댔는지</b>로 갈립니다. 어느 쪽이든 갈림길은 목적의 정당성과 반복성입니다.",
+            src: "매뉴얼 102쪽, 105쪽"
+        }
+    ];
+
+    /* 매뉴얼이 따로 뽑아 둔 Q&A — 현장에서 가장 자주 나오는 질문들 */
+    const QNA = [
+        {
+            q: "정당한 권리행사와 협박은 어떻게 구별하나요?",
+            a: "법이 보장한 절차를 상당한 수단으로 행사하는 것은 위법하지 않습니다. 아동학대 고소나 민원을 예고한 것만으로는 협박이 아닙니다. 다만 폭언을 곁들여 고지하거나, 확인되지 않은 사실로 고소하겠다고 위협하는 것처럼 상당한 수단이 아니라면 권리 남용으로 협박이 될 수 있습니다.",
+            src: "매뉴얼 94쪽"
+        },
+        {
+            q: "실제로 실행할 마음이 없었어도 협박죄가 되나요?",
+            a: "됩니다. 고지한 해악을 실현할 의도가 없었더라도 그 언행이 피해자의 공포심을 일으키기에 충분하면 성립할 수 있습니다. 다만 단순한 감정적 욕설이나 일시적 분노의 표시에 불과해 가해 의사가 없음이 객관적으로 명백하다면 협박으로 보지 않습니다.",
+            src: "매뉴얼 94쪽 (대법원 2007도4794)"
+        },
+        {
+            q: "교원에 대한 허위 고소나 민원을 명예훼손으로 볼 수 있나요?",
+            a: "볼 수 없습니다. 수사 절차나 민원 처리 절차에서는 그 내용이 담당자 외의 불특정 다수에게 퍼질 가능성이 있다고 보기 어려워 공연성이 인정되지 않습니다. 이런 경우는 명예훼손이 아니라 <b>무고</b>로 다룹니다.",
+            src: "매뉴얼 95쪽"
+        },
+        {
+            q: "성욕을 만족시키려는 목적이 없었다면 강제추행이 아닌가요?",
+            a: "목적은 요건이 아닙니다. 객관적으로 일반인에게 성적 수치심이나 혐오감을 일으키고 선량한 성적 도덕관념에 반하는 행위로서 피해자의 성적 자유를 침해했다면 추행입니다. 가해자의 주관적 동기는 따지지 않습니다.",
+            src: "매뉴얼 98쪽 (대법원 2013도5856)"
+        },
+        {
+            q: "불법촬영물을 보기만 하거나 저장만 해도 처벌되나요?",
+            a: "됩니다. 2024년 10월 16일 시행된 개정 성폭력처벌법에 따라 불법촬영물을 소지·구입·저장하거나 시청하는 행위에도 형사처벌 규정이 신설되었습니다. 또한 얼굴·신체·음성을 성적 욕망이나 수치심을 유발할 형태로 편집·합성·가공하는 행위는 <b>반포할 목적이 없어도</b> 처벌됩니다.",
+            src: "매뉴얼 97~98쪽"
+        },
+        {
+            q: "인터넷에서 남이 쓴 글에 댓글만 달아도 명예훼손이 되나요?",
+            a: "형식은 따지지 않습니다. 댓글이라 하더라도 피해자의 사회적 가치나 평가를 떨어뜨리는 내용을 적었다면 명예훼손에 해당할 수 있습니다.",
+            src: "매뉴얼 99쪽 (대법원 2008도2422)"
+        },
+        {
+            q: "반복성은 몇 번부터 인정되나요?",
+            a: "일률적인 기준은 없고 상황에 따라 판단합니다. 판례에서는 17개월 동안 33회, 하루 동안 3회 문자를 보낸 경우 반복성을 인정했고, <b>7개월 동안 3회</b>는 일련의 반복적 행위로 볼 수 없다고 판단했습니다. 일회성·단발성 행위가 여러 번 있었던 것과는 구분합니다.",
+            src: "매뉴얼 100쪽"
+        }
+    ];
+
+    const TERM_MAP = {};
+    TERMS.forEach(t => TERM_MAP[t.term] = t);
+
+    const SOLO_TIME = 360; // 개인전 제한시간 6분
+    const TOTAL_ITEMS = TERMS.length + MCQ_POOL.length;
+
+    const MODE_INFO = {
+        solo: {
+            tagline: "혼자 익히고, 얼마나 헤매지 않았는지를 봅니다.",
+            lines: [
+                ["시간", "6분 안에 22개 용어 짝짓기와 퀴즈까지"],
+                ["선택", "맞을 때까지 다시 고를 수 있음"],
+                ["점수", "정답 +20 · 오답 -10 · 시간 내 완주 +30"]
+            ],
+            placeholder: "닉네임을 입력하세요",
+            startText: "게임 시작하기 (제한시간 6분)",
+            emptyAlert: "닉네임을 입력해주세요!"
+        },
+        team: {
+            tagline: "함께 상의해 고르고, 몇 개를 바로 맞혔는지를 봅니다.",
+            lines: [
+                ["시간", "제한 없음 · 충분히 이야기한 뒤 선택"],
+                ["선택", "퀴즈는 모둠이 합의해 한 번만"],
+                ["점수", "정답 +20 · 오답 감점 없음"],
+                ["진행", "라운드마다 용어 정리 카드가 나옵니다"]
+            ],
+            placeholder: "모둠 이름을 입력하세요",
+            startText: "모둠전 시작하기 (시간 제한 없음)",
+            emptyAlert: "모둠 이름을 입력해주세요!"
+        }
+    };
+
+    let G = {
+        nickname: "", mode: "solo",
+        score: 0, correctCount: 0, wrongAttempts: 0,
+        timeRemaining: SOLO_TIME, timeSpent: 0, timerInterval: null,
+        plan: [],              // [[용어명...], ...] 라운드 구성
+        roundIndex: 0,
+        roundMatched: [],      // 현재 라운드에서 이미 맞힌 용어
+        matchedAll: [],        // 지금까지 맞힌 모든 용어
+        failed: [],            // 오답 시도가 있었던 용어 (짝짓기·퀴즈 전체)
+        matchFailed: [],       // 짝짓기에서 한 번이라도 틀린 용어
+        mcqOrder: [], mcqIndex: 0, mcqPicked: null, mcqFailedNow: false,
+        phase: "match",        // match | summary | mcq | mcqExplain
+        finished: false, timedOut: false,
         selectedTermElement: null
     };
 
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
+    /* ── 저장 ───────────────────────────────────────────── */
+    const SAVE_KEY = 'eduLawTerms';
+
+    function saveState() {
+        try {
+            let s = Object.assign({}, G);
+            delete s.timerInterval;
+            delete s.selectedTermElement;
+            sessionStorage.setItem(SAVE_KEY, JSON.stringify(s));
+        } catch (e) {}
+    }
+    function clearState() { try { sessionStorage.removeItem(SAVE_KEY); } catch (e) {} }
+    function restart() { clearState(); location.reload(); }
+
+    /* ── 공통 ───────────────────────────────────────────── */
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+            [arr[i], arr[j]] = [arr[j], arr[i]];
         }
-        return array;
+        return arr;
     }
-
-    function switchScreen(screenId) {
+    function switchScreen(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
+        document.getElementById(id).classList.add('active');
+    }
+    function showAnim(text, isPlus, e) {
+        const a = document.createElement('div');
+        a.className = 'score-anim ' + (isPlus ? 'plus' : 'minus');
+        a.innerText = text;
+        let x = window.innerWidth / 2, y = window.innerHeight / 2;
+        if (e) {
+            if (e.touches && e.touches.length) { x = e.touches[0].clientX; y = e.touches[0].clientY; }
+            else if (e.changedTouches && e.changedTouches.length) { x = e.changedTouches[0].clientX; y = e.changedTouches[0].clientY; }
+            else if (e.clientX) { x = e.clientX; y = e.clientY; }
+        }
+        a.style.left = x + 'px'; a.style.top = y + 'px';
+        document.body.appendChild(a);
+        setTimeout(() => a.remove(), 1000);
+    }
+    function updateScore(points, e) {
+        if (G.mode === 'team' && points < 0) return; // 모둠전은 감점 없음
+        G.score += points;
+        document.getElementById('display-score').innerText = G.score;
+        showAnim((points > 0 ? '+' : '') + points, points > 0, e);
     }
 
-    function showMinusAnimation(e) {
-        if (!e) return;
-        const anim = document.createElement('div');
-        anim.className = 'minus-score-anim';
-        anim.innerText = '-10'; // 수정된 감점 수치
-        
-        let clientX = e.clientX;
-        let clientY = e.clientY;
+    function setMode(m) {
+        G.mode = m;
+        const info = MODE_INFO[m];
+        document.getElementById('mode-solo').classList.toggle('selected', m === 'solo');
+        document.getElementById('mode-team').classList.toggle('selected', m === 'team');
+        document.getElementById('mode-desc').innerHTML =
+            `<p class="mode-tagline">${info.tagline}</p><ul>` +
+            info.lines.map(l => `<li><b>${l[0]}</b> ${l[1]}</li>`).join('') + `</ul>`;
+        document.getElementById('nickname-input').placeholder = info.placeholder;
+        document.getElementById('start-btn').innerText = info.startText;
+    }
 
-        if (e.touches && e.touches.length > 0) {
-            clientX = e.touches[0].clientX;
-            clientY = e.touches[0].clientY;
-        } else if (e.changedTouches && e.changedTouches.length > 0) {
-            clientX = e.changedTouches[0].clientX;
-            clientY = e.changedTouches[0].clientY;
-        }
-
-        anim.style.left = (clientX || window.innerWidth / 2) + 'px';
-        anim.style.top = (clientY || window.innerHeight / 2) + 'px';
-        
-        document.body.appendChild(anim);
-        setTimeout(() => anim.remove(), 1000);
+    /* ── 시작 ───────────────────────────────────────────── */
+    /* 라운드마다 정답이 아닌 용어 카드 2개를 섞습니다.
+       그렇게 하지 않으면 마지막 한두 개가 소거법으로 풀립니다. */
+    function buildPlan() {
+        const s1 = shuffleArray(TERMS.filter(t => t.stage === 1).map(t => t.term));
+        const s2 = shuffleArray(TERMS.filter(t => t.stage === 2).map(t => t.term));
+        const groups = [
+            { terms: s1.slice(0, 5), pool: s1 },
+            { terms: s1.slice(5, 10), pool: s1 },
+            { terms: s1.slice(10, 15), pool: s1 },
+            { terms: s2.slice(0, 3), pool: s2 },
+            { terms: s2.slice(3, 7), pool: s2 }
+        ];
+        return groups.map(g => ({
+            terms: g.terms,
+            decoys: shuffleArray(g.pool.filter(t => g.terms.indexOf(t) < 0)).slice(0, 2)
+        }));
     }
 
     function startGame() {
-        const nameInput = document.getElementById('nickname-input').value.trim();
-        if (!nameInput) {
-            alert('게임을 시작하려면 닉네임을 입력해주세요!');
-            return;
-        }
-        
-        gameState.nickname = nameInput;
-        document.getElementById('display-name').innerText = nameInput;
+        const name = document.getElementById('nickname-input').value.trim();
+        if (!name) { alert(MODE_INFO[G.mode].emptyAlert); return; }
+
+        G.nickname = name;
+        G.plan = buildPlan();
+        G.mcqOrder = shuffleArray(MCQ_POOL.map((_, i) => i));
+
+        document.getElementById('display-name').innerText = name;
+        document.getElementById('mcq-total').innerText = MCQ_POOL.length;
         document.getElementById('start-screen').classList.remove('active');
         document.getElementById('main-ui').style.display = 'block';
-        switchScreen('matching-screen');
 
-        let shuffledData = shuffleArray([...originalData]);
-        gameState.chunks = [
-            shuffledData.slice(0, 5),
-            shuffledData.slice(5, 10),
-            shuffledData.slice(10, 15) 
-        ];
-        
-        let mcqPool = shuffleArray([...originalData]);
-        gameState.mcqQuestions = mcqPool.slice(0, 5);
-
-        startTimer();
         loadMatchingRound();
+        startTimer();
+        saveState();
     }
 
     function startTimer() {
+        clearInterval(G.timerInterval);
         updateTimerDisplay();
-        gameState.timerInterval = setInterval(() => {
-            gameState.timeRemaining--;
+        G.timerInterval = setInterval(() => {
+            G.timeSpent++;
+            if (G.mode === 'solo') G.timeRemaining--;
             updateTimerDisplay();
-            if (gameState.timeRemaining <= 0) {
-                clearInterval(gameState.timerInterval);
-                alert("시간이 초과되었습니다! 결과 화면으로 이동합니다.");
-                endGame();
+            saveState();
+            if (G.mode === 'solo' && G.timeRemaining <= 0) {
+                clearInterval(G.timerInterval);
+                endGame(true);
             }
         }, 1000);
     }
 
     function updateTimerDisplay() {
-        const m = Math.floor(gameState.timeRemaining / 60).toString().padStart(2, '0');
-        const s = (gameState.timeRemaining % 60).toString().padStart(2, '0');
-        document.getElementById('display-time').innerText = `${m}:${s}`;
-        
-        if(gameState.timeRemaining <= 30) {
-            document.getElementById('display-time').style.color = 'red';
-        }
-    }
-
-    function updateScore(points) {
-        gameState.score += points;
-        document.getElementById('display-score').innerText = gameState.score;
-    }
-
-    function loadMatchingRound() {
-        const dropZones = document.getElementById('drop-zones');
-        const dragItems = document.getElementById('drag-items');
-        dropZones.innerHTML = '';
-        dragItems.innerHTML = '';
-        gameState.matchesInCurrentRound = 0;
-        gameState.selectedTermElement = null;
-
-        const currentData = gameState.chunks[gameState.currentChunkIndex];
-        
-        let terms = shuffleArray([...currentData]);
-        let defs = shuffleArray([...currentData]);
-
-        defs.forEach(item => {
-            const dropDiv = document.createElement('div');
-            dropDiv.className = 'drop-zone';
-            dropDiv.setAttribute('data-term', item.term);
-            dropDiv.setAttribute('data-failed', 'false'); 
-            
-            dropDiv.innerHTML = `
-                <div class="def-text">${item.def}</div>
-                <div class="slot">빈칸</div>
-            `;
-
-            dropDiv.addEventListener('dragover', e => {
-                e.preventDefault();
-                dropDiv.classList.add('hover');
-            });
-            dropDiv.addEventListener('dragleave', () => dropDiv.classList.remove('hover'));
-            dropDiv.addEventListener('drop', e => {
-                e.preventDefault();
-                dropDiv.classList.remove('hover');
-                const draggedTerm = e.dataTransfer.getData('text/plain');
-                handleMatchAttempt(draggedTerm, dropDiv, null, e);
-            });
-
-            dropDiv.addEventListener('click', e => {
-                if(gameState.selectedTermElement) {
-                    handleMatchAttempt(gameState.selectedTermElement.innerText, dropDiv, gameState.selectedTermElement, e);
-                }
-            });
-
-            dropZones.appendChild(dropDiv);
-        });
-
-        terms.forEach(item => {
-            const dragDiv = document.createElement('div');
-            dragDiv.className = 'drag-item';
-            dragDiv.innerText = item.term;
-            dragDiv.draggable = true;
-
-            dragDiv.addEventListener('dragstart', e => {
-                e.dataTransfer.setData('text/plain', item.term);
-                setTimeout(() => dragDiv.classList.add('dragging'), 0);
-            });
-            dragDiv.addEventListener('dragend', () => dragDiv.classList.remove('dragging'));
-
-            dragDiv.addEventListener('click', () => {
-                document.querySelectorAll('.drag-item').forEach(el => el.classList.remove('selected'));
-                dragDiv.classList.add('selected');
-                gameState.selectedTermElement = dragDiv;
-            });
-
-            dragItems.appendChild(dragDiv);
-        });
-    }
-
-    function handleMatchAttempt(draggedTerm, dropDiv, draggedElement = null, event = null) {
-        if(dropDiv.classList.contains('correct')) return;
-
-        const correctTerm = dropDiv.getAttribute('data-term');
-        
-        if (draggedTerm === correctTerm) {
-            dropDiv.classList.add('correct');
-            dropDiv.querySelector('.slot').innerText = draggedTerm;
-            updateScore(20); // 수정된 점수 (+20)
-            gameState.matchesInCurrentRound++;
-
-            if (dropDiv.getAttribute('data-failed') !== "true") {
-                gameState.correctCount++;
-            }
-
-            if(!draggedElement) {
-                const items = document.querySelectorAll('.drag-item');
-                for(let item of items) {
-                    if(item.innerText === draggedTerm) { draggedElement = item; break; }
-                }
-            }
-            if(draggedElement) draggedElement.remove();
-            gameState.selectedTermElement = null;
-
-            checkRoundComplete();
+        const box = document.getElementById('display-time-box');
+        if (G.mode === 'team') {
+            const m = Math.floor(G.timeSpent / 60).toString().padStart(2, '0');
+            const s = (G.timeSpent % 60).toString().padStart(2, '0');
+            box.innerHTML = `⏱️ <span id="display-time">${m}:${s}</span>`;
         } else {
-            updateScore(-10); // 수정된 점수 (-10)
-            gameState.wrongAttempts++;
-            dropDiv.setAttribute('data-failed', 'true'); 
-            if (event) showMinusAnimation(event);
-            
-            dropDiv.classList.add('hover');
-            dropDiv.style.borderColor = 'red';
-            setTimeout(() => {
-                dropDiv.classList.remove('hover');
-                dropDiv.style.borderColor = '';
-            }, 500);
-            if(gameState.selectedTermElement) {
-                gameState.selectedTermElement.classList.remove('selected');
-                gameState.selectedTermElement = null;
+            const t = Math.max(G.timeRemaining, 0);
+            const m = Math.floor(t / 60).toString().padStart(2, '0');
+            const s = (t % 60).toString().padStart(2, '0');
+            box.innerHTML = `⏱️ <span id="display-time" style="color:${t <= 30 ? '#E53935' : 'inherit'}">${m}:${s}</span>`;
+        }
+        const done = G.matchedAll.length;
+        document.getElementById('display-progress').innerHTML =
+            G.phase === 'mcq' || G.phase === 'mcqExplain'
+                ? `📝 퀴즈 ${G.mcqIndex + 1}/${MCQ_POOL.length}`
+                : `짝짓기 ${done}/${TERMS.length}<span class="stage-tag">${G.roundIndex < 3 ? '1단계' : '2단계'}</span>`;
+    }
+
+    /* ── 짝짓기 ─────────────────────────────────────────── */
+    function loadMatchingRound() {
+        G.phase = 'match';
+        switchScreen('matching-screen');
+
+        const zones = document.getElementById('drop-zones');
+        const items = document.getElementById('drag-items');
+        zones.innerHTML = ''; items.innerHTML = '';
+        G.selectedTermElement = null;
+
+        const round = G.plan[G.roundIndex].terms;
+        const decoys = G.plan[G.roundIndex].decoys || [];
+        const stage = G.roundIndex < 3 ? 1 : 2;
+        document.getElementById('round-title').innerText =
+            `${stage}단계 · ${G.roundIndex + 1}라운드 / ${G.plan.length}`;
+        document.getElementById('round-sub').innerHTML = (stage === 1
+            ? "형법 등 다른 법률에서 범죄로 정한 행위입니다."
+            : "교원지위법에만 있는 침해행위 유형입니다. 형법에 없는 말이라 더 낯설 수 있습니다.")
+            + "<br><b>이 라운드에 속하지 않는 용어 카드도 섞여 있습니다.</b> 끝까지 남는 카드가 있는 게 정상입니다.";
+
+        shuffleArray([...round]).forEach(termName => {
+            const t = TERM_MAP[termName];
+            const z = document.createElement('div');
+            z.className = 'drop-zone';
+            z.setAttribute('data-term', termName);
+            z.innerHTML = `<div class="def-text">${t.def}</div><div class="slot">?</div>`;
+
+            if (G.roundMatched.indexOf(termName) >= 0) {
+                z.classList.add('correct');
+                z.querySelector('.slot').innerText = termName;
             }
+
+            z.addEventListener('dragover', ev => { ev.preventDefault(); z.classList.add('hover'); });
+            z.addEventListener('dragleave', () => z.classList.remove('hover'));
+            z.addEventListener('drop', ev => {
+                ev.preventDefault(); z.classList.remove('hover');
+                handleMatchAttempt(ev.dataTransfer.getData('text/plain'), z, null, ev);
+            });
+            z.addEventListener('click', ev => {
+                if (G.selectedTermElement) {
+                    handleMatchAttempt(G.selectedTermElement.innerText, z, G.selectedTermElement, ev);
+                }
+            });
+            zones.appendChild(z);
+        });
+
+        shuffleArray([...round, ...decoys]).forEach(termName => {
+            if (G.roundMatched.indexOf(termName) >= 0) return;
+            const d = document.createElement('div');
+            d.className = 'drag-item';
+            d.draggable = true;
+            d.innerText = termName;
+            d.addEventListener('dragstart', ev => {
+                ev.dataTransfer.setData('text/plain', termName);
+                d.classList.add('dragging');
+            });
+            d.addEventListener('dragend', () => d.classList.remove('dragging'));
+            d.addEventListener('click', ev => {
+                ev.stopPropagation();
+                document.querySelectorAll('.drag-item').forEach(el => el.classList.remove('selected'));
+                d.classList.add('selected');
+                G.selectedTermElement = d;
+            });
+            items.appendChild(d);
+        });
+
+        updateTimerDisplay();
+    }
+
+    function handleMatchAttempt(dragged, zone, el, ev) {
+        if (zone.classList.contains('correct')) return;
+        const correct = zone.getAttribute('data-term');
+
+        if (dragged === correct) {
+            zone.classList.add('correct');
+            zone.querySelector('.slot').innerText = dragged;
+            updateScore(20, ev);
+            if (G.failed.indexOf(correct) < 0) G.correctCount++;
+            G.roundMatched.push(correct);
+            G.matchedAll.push(correct);
+
+            if (!el) {
+                document.querySelectorAll('.drag-item').forEach(i => { if (i.innerText === dragged) el = i; });
+            }
+            if (el) el.remove();
+            G.selectedTermElement = null;
+            saveState();
+            updateTimerDisplay();
+
+            if (G.roundMatched.length >= G.plan[G.roundIndex].terms.length) {
+                setTimeout(showRoundSummary, 600);
+            }
+        } else {
+            updateScore(-10, ev);
+            G.wrongAttempts++;
+            if (G.failed.indexOf(correct) < 0) G.failed.push(correct);
+            if (G.matchFailed.indexOf(correct) < 0) G.matchFailed.push(correct);
+            zone.classList.add('hover');
+            zone.style.borderColor = '#E57373';
+            setTimeout(() => { zone.classList.remove('hover'); zone.style.borderColor = ''; }, 500);
+            if (G.selectedTermElement) {
+                G.selectedTermElement.classList.remove('selected');
+                G.selectedTermElement = null;
+            }
+            saveState();
         }
     }
 
-    function checkRoundComplete() {
-        const targetMatches = gameState.chunks[gameState.currentChunkIndex].length;
-        if (gameState.matchesInCurrentRound >= targetMatches) {
-            gameState.currentChunkIndex++;
-            if (gameState.currentChunkIndex < gameState.chunks.length) {
-                setTimeout(() => loadMatchingRound(), 800);
-            } else {
-                setTimeout(() => {
-                    alert("축하합니다! 짝짓기를 모두 맞혔습니다!\n이제 마무리 퀴즈를 시작합니다.");
-                    startMCQ();
-                }, 500);
-            }
+    /* ── 라운드 정리 카드 ───────────────────────────────── */
+    function noteCardHtml(termName, missed) {
+        const t = TERM_MAP[termName];
+        return `<div class="note-card${missed ? ' missed' : ''}">
+            <div class="nc-term">${missed ? '❌ ' : ''}${t.term}</div>
+            <div class="nc-full">${t.full}</div>
+            <div class="nc-note">${t.note}</div>
+            <div class="nc-src">📖 ${t.src}</div>
+        </div>`;
+    }
+
+    function showRoundSummary() {
+        clearInterval(G.timerInterval);
+        G.phase = 'summary';
+        switchScreen('summary-screen');
+
+        const round = G.plan[G.roundIndex].terms;
+        const decoys = G.plan[G.roundIndex].decoys || [];
+        document.getElementById('summary-title').innerText =
+            `📕 ${G.roundIndex + 1}라운드 용어 정리`;
+        document.getElementById('summary-list').innerHTML =
+            round.map(t => noteCardHtml(t, G.matchFailed.indexOf(t) >= 0)).join('') +
+            (decoys.length ? `<p class="decoy-note">🃏 이번 라운드에 섞여 있던 다른 용어 : ${decoys.join(', ')} — 이 라운드의 답이 아니었습니다.</p>` : '');
+        document.getElementById('summary-next').innerText =
+            (G.roundIndex + 1 >= G.plan.length) ? "마무리 퀴즈로 →" : "다음 라운드로 →";
+        saveState();
+    }
+
+    function afterSummary() {
+        G.roundIndex++;
+        G.roundMatched = [];
+        saveState();
+        if (G.roundIndex >= G.plan.length) {
+            startMCQ();
+        } else if (G.roundIndex === 3) {
+            showStageIntro();   // 1단계 → 2단계로 넘어가는 자리
+        } else {
+            loadMatchingRound();
+            startTimer();
         }
     }
 
+    function showStageIntro() {
+        clearInterval(G.timerInterval);
+        G.phase = 'stage';
+        switchScreen('stage-screen');
+        saveState();
+    }
+
+    function continueStage() {
+        loadMatchingRound();
+        startTimer();
+    }
+
+    /* ── 마무리 퀴즈 ────────────────────────────────────── */
     function startMCQ() {
-        if (gameState.timeRemaining > 0) {
-            updateScore(30); // 3분 내 해결 시 보너스 점수 (+30)
-        }
-        switchScreen('mcq-screen');
+        if (G.mode === 'solo' && G.timeRemaining > 0) updateScore(30);
         loadMCQ();
+        startTimer();
     }
 
     function loadMCQ() {
-        if (gameState.currentMcqIndex >= gameState.mcqQuestions.length) {
-            endGame();
+        if (G.mcqIndex >= G.mcqOrder.length) { endGame(false); return; }
+        G.phase = 'mcq';
+        G.mcqFailedNow = false;
+        G.mcqPicked = null;
+        switchScreen('mcq-screen');
+
+        const q = MCQ_POOL[G.mcqOrder[G.mcqIndex]];
+        document.getElementById('mcq-progress').innerText = G.mcqIndex + 1;
+        document.getElementById('mcq-q-text').innerHTML =
+            `<span class="q-lead">다음 사건은 어떤 유형인가요?</span>${q.text}`;
+
+        const wrap = document.getElementById('mcq-options-container');
+        wrap.innerHTML = '';
+        wrap.style.display = 'grid';
+        document.getElementById('mcq-explain').style.display = 'none';
+
+        let opts = [q.answer].concat(
+            shuffleArray(TERMS.map(t => t.term).filter(t => t !== q.answer)).slice(0, 3)
+        );
+        shuffleArray(opts).forEach(o => {
+            const b = document.createElement('button');
+            b.className = 'option-btn';
+            b.innerText = o;
+            b.onclick = ev => handleMcqAnswer(o, q, b, ev);
+            wrap.appendChild(b);
+        });
+        updateTimerDisplay();
+        saveState();
+    }
+
+    function handleMcqAnswer(picked, q, btn, ev) {
+        if (btn.classList.contains('wrong')) return;
+        const isCorrect = (picked === q.answer);
+
+        if (G.mode === 'team') {
+            if (isCorrect) { updateScore(20, ev); G.correctCount++; }
+            else { G.wrongAttempts++; if (G.failed.indexOf(q.answer) < 0) G.failed.push(q.answer); }
+            showMcqExplain(picked, isCorrect, q);
             return;
         }
 
-        gameState.currentMcqFailed = false; 
-        const qData = gameState.mcqQuestions[gameState.currentMcqIndex];
-        document.getElementById('mcq-progress').innerText = gameState.currentMcqIndex + 1;
-        document.getElementById('mcq-q-text').innerText = `다음 설명에 해당하는 법률 용어는?\n"${qData.def}"`;
-
-        const optionsContainer = document.getElementById('mcq-options-container');
-        optionsContainer.innerHTML = '';
-
-        let options = [qData.term];
-        let distractors = shuffleArray(originalData.map(d => d.term).filter(t => t !== qData.term));
-        
-        options = options.concat(distractors.slice(0, 4));
-        options = shuffleArray(options);
-
-        options.forEach(opt => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.innerText = opt;
-            btn.onclick = (e) => handleMcqAnswer(opt === qData.term, btn, e);
-            optionsContainer.appendChild(btn);
-        });
-    }
-
-    function handleMcqAnswer(isCorrect, btnElement, event) {
-        if (btnElement.classList.contains('wrong')) return;
-
         if (isCorrect) {
-            updateScore(20); // 수정된 점수 (+20)
-            if (!gameState.currentMcqFailed) {
-                gameState.correctCount++;
-            }
-            gameState.currentMcqIndex++;
-            loadMCQ();
+            updateScore(20, ev);
+            if (!G.mcqFailedNow) G.correctCount++;
+            showMcqExplain(picked, true, q);
         } else {
-            updateScore(-10); // 수정된 점수 (-10)
-            gameState.wrongAttempts++;
-            gameState.currentMcqFailed = true; 
-            btnElement.classList.add('wrong');
-            if (event) showMinusAnimation(event);
+            updateScore(-10, ev);
+            G.wrongAttempts++;
+            G.mcqFailedNow = true;
+            if (G.failed.indexOf(q.answer) < 0) G.failed.push(q.answer);
+            btn.classList.add('wrong');
+            saveState();
         }
     }
 
-    function endGame() {
-        clearInterval(gameState.timerInterval);
+    function showMcqExplain(picked, isCorrect, q) {
+        clearInterval(G.timerInterval);
+        G.phase = 'mcqExplain';
+        G.mcqPicked = picked;
+
+        document.getElementById('mcq-options-container').style.display = 'none';
+        const v = document.getElementById('verdict');
+        v.className = isCorrect ? 'ok' : 'no';
+        v.innerHTML = isCorrect
+            ? `✅ 정답입니다 — ${q.answer}`
+            : `📌 이 사건의 답은 <b>${q.answer}</b>입니다<span class="answer-line">고른 답 : ${picked}</span>`;
+
+        const t = TERM_MAP[q.answer];
+        document.getElementById('explain-body').innerHTML =
+            `<div class="note-card">
+                <div class="nc-term">${t.term}</div>
+                <div class="nc-full">${t.full}</div>
+                <div class="nc-note">${q.note}</div>
+                <div class="nc-src">📖 ${t.src}</div>
+            </div>`;
+
+        document.getElementById('mcq-next').innerText =
+            (G.mcqIndex + 1 >= G.mcqOrder.length) ? "결과 보기 →" : "다음 문제 →";
+        document.getElementById('mcq-explain').style.display = 'block';
+        saveState();
+    }
+
+    function nextMcq() {
+        G.mcqIndex++;
+        saveState();
+        if (G.mcqIndex >= G.mcqOrder.length) { endGame(false); return; }
+        loadMCQ();
+        startTimer();
+    }
+
+    /* ── 결과 ───────────────────────────────────────────── */
+    function endGame(timedOut) {
+        clearInterval(G.timerInterval);
+        G.finished = true;
+        G.timedOut = !!timedOut;
+        saveState();
+        renderResult();
+    }
+
+    function missedTerms() {
+        // 오답 시도가 있었던 용어 + 시간이 끝나 아직 만나지 못한 용어
+        const unseen = TERMS.map(t => t.term).filter(t => G.matchedAll.indexOf(t) < 0);
+        const set = [];
+        TERMS.forEach(t => {
+            if (G.failed.indexOf(t.term) >= 0 || unseen.indexOf(t.term) >= 0) set.push(t.term);
+        });
+        return set;
+    }
+
+    function renderResult() {
+        document.getElementById('start-screen').classList.remove('active');
         document.getElementById('main-ui').style.display = 'none';
         switchScreen('result-screen');
 
-        const timeTaken = 180 - gameState.timeRemaining;
-        const m = Math.floor(timeTaken / 60);
-        const s = timeTaken % 60;
-        const timeString = timeTaken >= 180 ? "시간 초과 (3분)" : `${m}분 ${s}초`;
+        const m = Math.floor(G.timeSpent / 60), s = G.timeSpent % 60;
+        document.getElementById('res-name').innerText =
+            G.nickname + (G.mode === 'team' ? ' 모둠' : ' 선생님');
+        document.getElementById('res-score').innerText = G.score;
+        document.getElementById('res-correct').innerText = G.correctCount;
+        document.getElementById('res-total').innerText = TOTAL_ITEMS;
+        document.getElementById('res-wrong').innerText = G.wrongAttempts;
+        document.getElementById('res-terms').innerText = TERMS.length;
+        document.getElementById('res-firsttry').innerText =
+            G.matchedAll.filter(t => G.matchFailed.indexOf(t) < 0).length;
+        document.getElementById('res-time').innerText =
+            `${m}분 ${s}초` + (G.timedOut ? ' (시간 초과)' : '');
 
-        let feedbackMsg = "";
-        if (gameState.correctCount >= 17) {
-            feedbackMsg = '대단해요! 우수한 성적입니다.';
-        } else if (gameState.correctCount >= 13) {
-            feedbackMsg = '안정적인 실력입니다. 조금만 더 보완하면 최고점에 도달하겠어요.';
+        let msg;
+        if (G.timedOut) {
+            msg = '시간 안에 다 돌지 못했습니다. 아래에 아직 만나지 못한 용어를 모아 두었으니 그대로 읽어 보세요.';
+        } else if (G.correctCount >= 24) {
+            msg = '용어가 잘 잡혀 있습니다. 이제 실제 사례 편에서 대입해 볼 차례입니다.';
+        } else if (G.correctCount >= 19) {
+            msg = '대부분 익히셨습니다. 아래 놓친 용어만 한 번 더 보고 넘어가면 좋겠습니다.';
         } else {
-            feedbackMsg = '기초를 잘 다지고 있습니다. 다음번 성장이 기대됩니다.';
+            msg = '조금 더 살펴볼 용어가 남았습니다. 아래 정리를 읽고 나면 사례가 훨씬 잘 붙습니다.';
+        }
+        document.getElementById('res-feedback').innerText = msg;
+
+        if (NEXT_URL) document.getElementById('next-step').style.display = 'block';
+
+        renderGlossary(false);
+        renderComparisons();
+        renderQna();
+    }
+
+    function renderQna() {
+        document.getElementById('qna-list').innerHTML = QNA.map(x => `
+            <div class="fold">
+                <div class="fold-head" onclick="this.parentNode.classList.toggle('open')">
+                    <span>Q. ${x.q}</span><span class="arrow">▼</span>
+                </div>
+                <div class="fold-body">
+                    <p class="qna-a">${x.a}</p>
+                    <div class="nc-src">📖 ${x.src}</div>
+                </div>
+            </div>`).join('');
+    }
+
+    function renderComparisons() {
+        document.getElementById('compare-list').innerHTML = COMPARISONS.map(c => `
+            <div class="fold">
+                <div class="fold-head" onclick="this.parentNode.classList.toggle('open')">
+                    <span>${c.title}</span><span class="arrow">▼</span>
+                </div>
+                <div class="fold-body">
+                    <div class="vs-grid">
+                        <div class="vs-col left"><h4>${c.left.name}</h4>${c.left.body}</div>
+                        <div class="vs-col right"><h4>${c.right.name}</h4>${c.right.body}</div>
+                    </div>
+                    <div class="vs-key">🔑 ${c.key}</div>
+                    <div class="nc-src">📖 ${c.src}</div>
+                </div>
+            </div>`).join('');
+    }
+
+    function renderGlossary(showAll) {
+        const lead = document.getElementById('missed-lead');
+        const btn = document.getElementById('show-all-btn');
+        const list = document.getElementById('missed-list');
+
+        if (showAll) {
+            lead.innerHTML = `${TERMS.length}개 용어를 1단계·2단계로 나누어 정리했습니다.`;
+            btn.style.display = 'none';
+            let html = '<div class="stage-label">1단계 · 형법 등 다른 법률의 범죄 행위</div>';
+            html += TERMS.filter(t => t.stage === 1).map(t => noteCardHtml(t.term, false)).join('');
+            html += '<div class="stage-label">2단계 · 교원지위법에만 있는 침해행위 유형</div>';
+            html += TERMS.filter(t => t.stage === 2).map(t => noteCardHtml(t.term, false)).join('');
+            list.innerHTML = html;
+            return;
         }
 
-        document.getElementById('res-name').innerText = gameState.nickname;
-        document.getElementById('res-score').innerText = gameState.score;
-        document.getElementById('res-correct').innerText = gameState.correctCount;
-        document.getElementById('res-time').innerText = timeString;
-        document.getElementById('res-wrong').innerText = gameState.wrongAttempts;
-        document.getElementById('res-feedback').innerText = feedbackMsg;
+        const missed = missedTerms();
+        btn.style.display = 'block';
+        if (missed.length === 0) {
+            lead.innerHTML = `놓친 용어가 없습니다. ${TERMS.length}개를 모두 한 번에 맞히셨습니다.`;
+            list.innerHTML = '';
+            return;
+        }
+        lead.innerHTML = G.timedOut
+            ? `아직 만나지 못했거나 헷갈린 용어가 <b>${missed.length}개</b>입니다. 시간에 쫓겨 지나친 부분이니 여기서 채워 두세요.`
+            : `놓친 용어가 <b>${missed.length}개</b>입니다. 여기만 읽어도 실제 사례 편을 따라가는 데는 충분합니다.`;
+        list.innerHTML = missed.map(t => noteCardHtml(t, true)).join('');
     }
+
+    function goNext() { if (NEXT_URL) location.href = NEXT_URL; }
 
     function copyResults() {
-        const timeTaken = 180 - gameState.timeRemaining;
-        const m = Math.floor(timeTaken / 60);
-        const s = timeTaken % 60;
-        const timeString = timeTaken >= 180 ? "시간 초과" : `${m}분 ${s}초`;
-        const feedbackMsg = document.getElementById('res-feedback').innerText;
+        const m = Math.floor(G.timeSpent / 60), s = G.timeSpent % 60;
+        const text = `⚖️ [교육활동보호 연수(법률 용어편) 결과]\n` +
+            `🎯 방식: ${G.mode === 'team' ? '모둠전' : '개인전'}\n` +
+            `👤 ${G.mode === 'team' ? '모둠' : '닉네임'}: ${G.nickname}\n` +
+            `⭐ 최종 점수: ${G.score}점\n` +
+            `🎯 정답: ${G.correctCount} / ${TOTAL_ITEMS}\n` +
+            `❌ 오답 시도: ${G.wrongAttempts}회\n` +
+            `⏱️ 소요 시간: ${m}분 ${s}초${G.timedOut ? ' (시간 초과)' : ''}\n\n` +
+            `💡 ${document.getElementById('res-feedback').innerText}`;
+        navigator.clipboard.writeText(text)
+            .then(() => alert('결과가 클립보드에 복사되었습니다!'))
+            .catch(() => alert('복사에 실패했습니다.'));
+    }
 
-        const textToCopy = `⚖️ [교육활동보호 연수(법률 용어편) 결과]\n👤 닉네임: ${gameState.nickname}\n⭐ 최종 점수: ${gameState.score}점\n🎯 정답 횟수: ${gameState.correctCount} / 20\n⏱️ 소요 시간: ${timeString}\n❌ 오답 횟수: ${gameState.wrongAttempts}회\n\n💡 ${feedbackMsg}`;
+    /* ── 새로고침·뒤로가기 대응 ─────────────────────────── */
+    function restoreState() {
+        let st;
+        try { st = JSON.parse(sessionStorage.getItem(SAVE_KEY)); } catch (e) { st = null; }
+        if (!st || !st.nickname) return false;
 
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            alert('결과가 클립보드에 복사되었습니다! 친구나 선생님께 공유해보세요.');
-        }).catch(err => {
-            alert('복사에 실패했습니다. 브라우저 설정을 확인해주세요.');
+        Object.keys(st).forEach(k => { G[k] = st[k]; });
+        G.timerInterval = null;
+        G.selectedTermElement = null;
+        setMode(G.mode);
+
+        document.getElementById('display-name').innerText = G.nickname;
+        document.getElementById('display-score').innerText = G.score;
+        document.getElementById('mcq-total').innerText = MCQ_POOL.length;
+
+        if (G.finished) { renderResult(); return true; }
+
+        document.getElementById('start-screen').classList.remove('active');
+        document.getElementById('main-ui').style.display = 'block';
+
+        if (G.phase === 'stage') {
+            showStageIntro();
+        } else if (G.phase === 'summary') {
+            showRoundSummary();
+        } else if (G.phase === 'mcq') {
+            loadMCQ(); startTimer();
+        } else if (G.phase === 'mcqExplain') {
+            const q = MCQ_POOL[G.mcqOrder[G.mcqIndex]];
+            loadMCQ();
+            showMcqExplain(G.mcqPicked, G.mcqPicked === q.answer, q);
+        } else {
+            loadMatchingRound(); startTimer();
+        }
+
+        const n = document.getElementById('resume-notice');
+        n.style.display = 'block';
+        setTimeout(() => { n.style.display = 'none'; }, 3000);
+        return true;
+    }
+
+    function guardBack() {
+        history.pushState(null, '', location.href);
+        window.addEventListener('popstate', () => {
+            history.pushState(null, '', location.href);
+            if (!G.finished) {
+                const n = document.getElementById('back-notice');
+                n.style.display = 'block';
+                clearTimeout(n._t);
+                n._t = setTimeout(() => { n.style.display = 'none'; }, 2500);
+            }
         });
     }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        setMode('solo');
+        restoreState();
+        guardBack();
+    });
 </script>
 
 </body>
