@@ -263,7 +263,7 @@
 
             <div class="mode-select">
                 <button type="button" class="mode-btn selected" id="mode-solo" onclick="setMode('solo')">
-                    🙋 개인전<small>6분 제한 · 혼자 익히기</small>
+                    🙋 개인전<small>4분 30초 제한 · 혼자 익히기</small>
                 </button>
                 <button type="button" class="mode-btn" id="mode-team" onclick="setMode('team')">
                     👥 모둠전<small>시간 제한 없음 · 함께 상의</small>
@@ -273,7 +273,7 @@
 
             <input type="text" id="nickname-input" placeholder="닉네임을 입력하세요" autocomplete="off" maxlength="12">
             <br>
-            <button id="start-btn" onclick="startGame()">게임 시작하기 (제한시간 6분)</button>
+            <button id="start-btn" onclick="startGame()">게임 시작하기 (제한시간 4분 30초)</button>
             <p class="credit">만든이 2026 최창훈</p>
             <p class="credit-src">내용 출처: 한국교육개발원 「교육활동 보호 매뉴얼」(2026년도 일부 개정)을 요약·재구성</p>
         </div>
@@ -283,7 +283,7 @@
         <div class="status-bar">
             <div class="status-item">👤 <span id="display-name"></span></div>
             <div class="status-item" id="display-progress">1단계</div>
-            <div class="status-item" id="display-time-box">⏱️ <span id="display-time">06:00</span></div>
+            <div class="status-item" id="display-time-box">⏱️ <span id="display-time">04:30</span></div>
             <div class="status-item">⭐ <span id="display-score">0</span>점</div>
         </div>
         <div id="resume-notice" class="notice">🔄 이어서 진행합니다. 풀던 라운드와 점수가 그대로입니다.</div>
@@ -787,19 +787,19 @@ OTHER DEALINGS IN THE FONT SOFTWARE.</pre>
     const TERM_MAP = {};
     TERMS.forEach(t => TERM_MAP[t.term] = t);
 
-    const SOLO_TIME = 360; // 개인전 제한시간 6분
+    const SOLO_TIME = 270; // 개인전 제한시간 4분 30초
     const TOTAL_ITEMS = TERMS.length + MCQ_POOL.length;
 
     const MODE_INFO = {
         solo: {
             tagline: "혼자 익히고, 얼마나 헤매지 않았는지를 봅니다.",
             lines: [
-                ["시간", "6분 안에 22개 용어 짝짓기와 퀴즈까지"],
+                ["시간", "4분 30초 안에 22개 용어 짝짓기와 퀴즈까지"],
                 ["선택", "맞을 때까지 다시 고를 수 있음"],
                 ["점수", "정답 +20 · 오답 -10 · 시간 내 완주 +30"]
             ],
             placeholder: "닉네임을 입력하세요",
-            startText: "게임 시작하기 (제한시간 6분)",
+            startText: "게임 시작하기 (제한시간 4분 30초)",
             emptyAlert: "닉네임을 입력해주세요!"
         },
         team: {
